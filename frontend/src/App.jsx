@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import aboutTeamBanner from '/src/assets/about-team-banner.webp'
 import banner2 from '/src/assets/pexels-swastikarora-18012459.jpg'
@@ -9,6 +9,8 @@ import instagramIcon from '/src/assets/instagram.png'
 import linkedinIcon from '/src/assets/linkedin.png'
 import zikshanaLogo from '/src/assets/logo-1.png'
 import heroBannerImage from '/src/assets/pexels-swastikarora-18012459.jpg'
+import Home from './pages/Home'
+import Stories from './pages/Stories'
 
 // Safe component imports with fallbacks
 const SafeHeader = () => {
@@ -46,7 +48,7 @@ const CRYInspiredHeader = () => (
           marginTop: '-30px',     // reduce top margin
           marginBottom: '-40px' 
         }}>
-          <a href="/" style={{ 
+          <Link to="/" style={{ 
             textDecoration: 'none', 
             display: 'flex', 
             alignItems: 'center', 
@@ -75,7 +77,7 @@ const CRYInspiredHeader = () => (
                 letterSpacing: '0.5px'
               }}>Empowering Communities, Transforming Lives</p>
             </div>
-          </a>
+          </Link>
         </div>
         
         <nav style={{
@@ -92,7 +94,7 @@ const CRYInspiredHeader = () => (
               { name: 'Stories', path: '/stories' },
               { name: 'Contact', path: '/contact' }
             ].map((item, index) => (
-              <a key={index} href={item.path} style={{
+              <Link key={index} to={item.path} style={{
                 color: 'var(--color-text-primary)',
                 textDecoration: 'none',
                 fontWeight: 500,
@@ -103,7 +105,7 @@ const CRYInspiredHeader = () => (
               onMouseOver={(e) => e.target.style.color = 'var(--color-primary)'}
               onMouseOut={(e) => e.target.style.color = 'var(--color-text-primary)'}>
                 {item.name}
-              </a>
+              </Link>
             ))}
           </div>
           
@@ -193,9 +195,17 @@ const SafeFooter = () => {
                   marginBottom: '1rem'
                 }} 
               />
+              <p style={{ 
+                fontSize: '1.1rem',
+                fontWeight: 600,
+                color: '#fbbf24',
+                marginBottom: '0.5rem'
+              }}>
+                From Classrooms to Changemakers.
+              </p>
               <p style={{ lineHeight: 1.6, opacity: 0.9 }}>
-                Empowering communities through education, transforming lives one child at a time, 
-                and building a brighter future for India's next generation.
+                Empowering students with skills, courage, and vision to design the future 
+                through transformative education that goes beyond traditional learning.
               </p>
             </div>
             
@@ -204,12 +214,12 @@ const SafeFooter = () => {
               <h4 style={{ color: 'var(--color-accent)', marginBottom: '1rem' }}>Quick Links</h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 {['About Us', 'Programs', 'Fellowship', 'Stories', 'Contact'].map((link, index) => (
-                  <a key={index} href={`/${link.toLowerCase().replace(' ', '')}`} 
+                  <Link key={index} to={`/${link.toLowerCase().replace(' ', '')}`} 
                      style={{ color: 'white', textDecoration: 'none', opacity: 0.9, transition: 'opacity 0.3s' }}
                      onMouseOver={(e) => e.target.style.opacity = '1'}
                      onMouseOut={(e) => e.target.style.opacity = '0.9'}>
                     {link}
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -266,25 +276,23 @@ const SafeHome = () => {
     const Home = require('./pages/Home').default
     return <Home />
   } catch (error) {
-    console.log('Home component not available, loading CRY-inspired homepage:', error.message)
-    return <CRYInspiredHomepage />
+    console.log('Home component not available, loading Teach for India inspired homepage:', error.message)
+    return <TeachForIndiaInspiredHomepage />
   }
 }
 
 // CRY.org inspired homepage design
-const CRYInspiredHomepage = () => (
+const TeachForIndiaInspiredHomepage = () => (
   <div>
-    {/* Hero Section - With Zikshana Logo Animation Video */}
-    <section 
-      style={{
-        minHeight: '80vh',
-        display: 'flex',
-        alignItems: 'center',
-        color: 'white',
-        position: 'relative',
-        overflow: 'hidden'
-      }}
-    >
+    {/* Hero Section - Clean TFI Style */}
+    <section style={{
+      background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #fbbf24 100%)',
+      minHeight: '80vh',
+      display: 'flex',
+      alignItems: 'center',
+      color: 'white',
+      position: 'relative'
+    }}>
       {/* Hero Banner Image */}
       <div
         style={{
@@ -322,6 +330,600 @@ const CRYInspiredHomepage = () => (
         pointerEvents: 'none'
       }} />
       
+      {/* Hero Content - Powerful Headlines */}
+      <div style={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        zIndex: 3,
+        textAlign: 'center',
+        color: 'white',
+        maxWidth: '1000px',
+        padding: '0 20px'
+      }}>
+        <h1 style={{
+          fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
+          fontFamily: 'Merriweather, serif',
+          fontWeight: 700,
+          marginBottom: '1.5rem',
+          lineHeight: 1.2,
+          textShadow: '2px 2px 8px hsla(52, 80%, 46%, 1.00)',
+          animation: 'fadeInUp 1s ease-out'
+        }}>
+          Because Every Child Deserves More Than Just a Classroom.
+        </h1>
+        
+        <p style={{
+          fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)',
+          marginBottom: '3rem',
+          opacity: 0.95,
+          fontWeight: 500,
+          textShadow: '1px 1px 4px rgba(0,0,0,0.3)',
+          animation: 'fadeInUp 1s ease-out 0.3s both'
+        }}>
+          5,000+ students today are discovering the courage to dream, create, and lead.
+        </p>
+        
+        <div style={{
+          display: 'flex',
+          gap: '2rem',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+          animation: 'fadeInUp 1s ease-out 0.6s both'
+        }}>
+          
+          
+         
+        </div>
+      </div>
+      
+    </section>
+
+    {/* The Problem Section */}
+    <section style={{
+      background: 'linear-gradient(135deg, #1f2937 0%, #374151 100%)',
+      padding: '100px 0',
+      color: 'white',
+      textAlign: 'center'
+    }}>
+      <div className="container-custom" style={{ maxWidth: '800px' }}>
+        <h2 style={{
+          fontSize: 'clamp(2.5rem, 4vw, 3.5rem)',
+          fontFamily: 'Merriweather, serif',
+          marginBottom: '3rem',
+          color: '#fbbf24',
+          animation: 'fadeInUp 1s ease-out'
+        }}>
+          The Truth We Cannot Ignore
+        </h2>
+        
+        <div style={{
+          fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)',
+          lineHeight: 1.6,
+          animation: 'fadeInUp 1s ease-out 0.3s both'
+        }}>
+          <p style={{ marginBottom: '2rem', fontWeight: 600 }}>
+            Classrooms are full. Futures are empty.
+          </p>
+          <p style={{ marginBottom: '2rem' }}>
+            Children memorize answers but leave school without the skills to survive—or the vision to thrive.
+          </p>
+          <p style={{ 
+            fontSize: 'clamp(1.4rem, 2.8vw, 2rem)',
+            fontWeight: 700,
+            color: '#fcd34d',
+            fontStyle: 'italic'
+          }}>
+            Every lost opportunity is not a number. It's a child's dream slipping away.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* The Solution Section */}
+    <section style={{
+      background: 'linear-gradient(135deg, #fefefe 0%, #f8fafc 100%)',
+      padding: '100px 0',
+      color: '#1f2937'
+    }}>
+      <div className="container-custom">
+        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+          <h2 style={{
+            fontSize: 'clamp(2.5rem, 4vw, 3.5rem)',
+            fontFamily: 'Merriweather, serif',
+            marginBottom: '2rem',
+            color: '#7c3aed'
+          }}>
+            Reimagining Education. Redefining Futures.
+          </h2>
+          
+          <p style={{
+            fontSize: 'clamp(1.2rem, 2vw, 1.5rem)',
+            maxWidth: '700px',
+            margin: '0 auto',
+            lineHeight: 1.6
+          }}>
+            Zikshana transforms schools into launchpads of possibility by integrating skill-based education alongside academics.
+          </p>
+        </div>
+        
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+          gap: '2rem',
+          marginTop: '3rem'
+        }}>
+          {[
+            { icon: '⚙️', title: 'STEM & Innovation' },
+            { icon: '🤖', title: 'Coding & Robotics' },
+            { icon: '🌍', title: 'Global Languages' },
+            { icon: '🎤', title: 'Public Speaking & Leadership' },
+            { icon: '🧘', title: 'Yoga & Well-being' },
+            { icon: '🚀', title: 'Entrepreneurship Platforms' }
+          ].map((item, index) => (
+            <div key={index} className="card" style={{
+              padding: '2rem',
+              textAlign: 'center',
+              transition: 'all 0.3s ease',
+              border: '2px solid #e5e7eb',
+              animation: `fadeInUp 1s ease-out ${0.1 * index}s both`
+            }}>
+              <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>{item.icon}</div>
+              <h3 style={{
+                fontSize: '1.2rem',
+                fontWeight: 600,
+                color: '#7c3aed'
+              }}>
+                {item.title}
+              </h3>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Why Zikshana is Different */}
+    <section style={{
+      backgroundImage: `url(${heroBannerImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      padding: '120px 0',
+      position: 'relative',
+      color: 'white'
+    }}>
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        background: 'linear-gradient(135deg, rgba(124,58,237,0.8) 0%, rgba(251,191,36,0.7) 100%)',
+        zIndex: 1
+      }} />
+      
+      <div className="container-custom" style={{ 
+        position: 'relative', 
+        zIndex: 2, 
+        textAlign: 'center',
+        maxWidth: '900px'
+      }}>
+        <h2 style={{
+          fontSize: 'clamp(2.8rem, 5vw, 4rem)',
+          fontFamily: 'Merriweather, serif',
+          marginBottom: '3rem',
+          fontWeight: 700,
+          textShadow: '2px 2px 8px rgba(0,0,0,0.3)'
+        }}>
+          We don't prepare students to survive the future. We empower them to design it.
+        </h2>
+        
+        <div style={{
+          display: 'grid',
+          gap: '2rem',
+          fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)',
+          fontWeight: 500,
+          textShadow: '1px 1px 4px rgba(0,0,0,0.3)'
+        }}>
+          <p>We see potential, not limitations.</p>
+          <p>We create builders, not just learners.</p>
+          <p>We measure curiosity and courage, not marks.</p>
+        </div>
+      </div>
+    </section>
+
+    {/* Impact Stories */}
+    <section style={{
+      background: 'var(--color-warm-gray)',
+      padding: '100px 0'
+    }}>
+      <div className="container-custom">
+        <h2 style={{
+          fontSize: 'clamp(2.5rem, 4vw, 3.5rem)',
+          fontFamily: 'Merriweather, serif',
+          textAlign: 'center',
+          marginBottom: '4rem',
+          color: '#7c3aed'
+        }}>
+          5,000+ Students. One Shared Dream.
+        </h2>
+        
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: '2rem'
+        }}>
+          {[
+            {
+              quote: "I was shy to speak… today I lead debates.",
+              name: "Priya, Grade 8",
+              image: "🎤"
+            },
+            {
+              quote: "I never thought I could build a robot… now I'm teaching others.",
+              name: "Arjun, Grade 10",
+              image: "🤖"
+            },
+            {
+              quote: "School was boring. Now, every day feels like an adventure.",
+              name: "Sneha, Grade 7",
+              image: "🚀"
+            }
+          ].map((story, index) => (
+            <div key={index} className="card" style={{
+              padding: '2.5rem',
+              textAlign: 'center',
+              background: 'white',
+              animation: `fadeInUp 1s ease-out ${0.2 * index}s both`
+            }}>
+              <div style={{ fontSize: '4rem', marginBottom: '1.5rem' }}>{story.image}</div>
+              <blockquote style={{
+                fontSize: '1.3rem',
+                fontStyle: 'italic',
+                marginBottom: '1.5rem',
+                color: '#374151',
+                lineHeight: 1.5
+              }}>
+                "{story.quote}"
+              </blockquote>
+              <cite style={{
+                fontSize: '1rem',
+                fontWeight: 600,
+                color: '#7c3aed'
+              }}>
+                — {story.name}
+              </cite>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Programs Section - The Pillars of Transformation */}
+    <section style={{
+      background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)',
+      padding: '100px 0',
+      color: 'white'
+    }}>
+      <div className="container-custom">
+        <h2 style={{
+          fontSize: 'clamp(2.5rem, 4vw, 3.5rem)',
+          fontFamily: 'Merriweather, serif',
+          textAlign: 'center',
+          marginBottom: '4rem',
+          textShadow: '2px 2px 8px rgba(0,0,0,0.3)'
+        }}>
+          The Pillars of Transformation
+        </h2>
+        
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gap: '2rem'
+        }}>
+          {[
+            { 
+              icon: '⚙️', 
+              title: 'STEM & Innovation',
+              description: 'Building tomorrow\'s problem solvers through hands-on science and technology'
+            },
+            { 
+              icon: '🤖', 
+              title: 'Coding & Robotics',
+              description: 'Empowering young minds to create, program, and innovate'
+            },
+            { 
+              icon: '🌍', 
+              title: 'Global Languages',
+              description: 'Opening doors to worldwide opportunities through multilingual fluency'
+            },
+            { 
+              icon: '🎤', 
+              title: 'Public Speaking & Leadership',
+              description: 'Developing confident voices that will lead the next generation'
+            },
+            { 
+              icon: '🧘', 
+              title: 'Yoga & Well-being',
+              description: 'Nurturing mental health and physical wellness for holistic growth'
+            },
+            { 
+              icon: '🚀', 
+              title: 'Entrepreneurship',
+              description: 'Inspiring young entrepreneurs to turn dreams into reality'
+            }
+          ].map((program, index) => (
+            <div key={index} style={{
+              background: 'rgba(255,255,255,0.1)',
+              backdropFilter: 'blur(10px)',
+              padding: '2.5rem',
+              borderRadius: '15px',
+              border: '1px solid rgba(255,255,255,0.2)',
+              textAlign: 'center',
+              transition: 'all 0.3s ease',
+              animation: `fadeInUp 1s ease-out ${0.1 * index}s both`
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = 'translateY(-5px)';
+              e.currentTarget.style.background = 'rgba(255,255,255,0.2)';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+            }}>
+              <div style={{ fontSize: '4rem', marginBottom: '1.5rem' }}>{program.icon}</div>
+              <h3 style={{
+                fontSize: '1.4rem',
+                fontWeight: 700,
+                marginBottom: '1rem',
+                color: '#fbbf24'
+              }}>
+                {program.title}
+              </h3>
+              <p style={{
+                fontSize: '1rem',
+                lineHeight: 1.6,
+                opacity: 0.9
+              }}>
+                {program.description}
+              </p>
+              <button style={{
+                marginTop: '1.5rem',
+                background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
+                color: '#1f2937',
+                border: 'none',
+                padding: '12px 24px',
+                borderRadius: '25px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseOver={(e) => {
+                e.target.style.transform = 'scale(1.05)';
+                e.target.style.boxShadow = '0 8px 25px rgba(251,191,36,0.4)';
+              }}
+              onMouseOut={(e) => {
+                e.target.style.transform = 'scale(1)';
+                e.target.style.boxShadow = 'none';
+              }}>
+                Learn More
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Donation Call to Action */}
+    <section style={{
+      backgroundImage: `url(${heroBannerImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      padding: '120px 0',
+      position: 'relative',
+      color: 'white'
+    }}>
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        background: 'linear-gradient(135deg, rgba(31,41,55,0.9) 0%, rgba(124,58,237,0.8) 100%)',
+        zIndex: 1
+      }} />
+      
+      <div className="container-custom" style={{ 
+        position: 'relative', 
+        zIndex: 2, 
+        textAlign: 'center',
+        maxWidth: '900px'
+      }}>
+        <h2 style={{
+          fontSize: 'clamp(2.8rem, 5vw, 4rem)',
+          fontFamily: 'Merriweather, serif',
+          marginBottom: '3rem',
+          fontWeight: 700,
+          textShadow: '2px 2px 8px rgba(0,0,0,0.3)'
+        }}>
+          Be the Reason a Child's Story Changes.
+        </h2>
+        
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: '2rem',
+          marginBottom: '3rem'
+        }}>
+          {[
+            { amount: '₹500', impact: 'Provide resources for one child' },
+            { amount: '₹1,000', impact: 'Fund a workshop' },
+            { amount: '₹5,000', impact: 'Support a classroom program for a month' },
+            { amount: '₹50,000', impact: 'Establish a skill & entrepreneurship hub' }
+          ].map((donation, index) => (
+            <div key={index} style={{
+              background: 'rgba(255,255,255,0.1)',
+              backdropFilter: 'blur(10px)',
+              padding: '2rem',
+              borderRadius: '15px',
+              border: '2px solid rgba(251,191,36,0.3)',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer',
+              animation: `fadeInUp 1s ease-out ${0.1 * index}s both`
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = 'translateY(-5px)';
+              e.currentTarget.style.borderColor = '#fbbf24';
+              e.currentTarget.style.background = 'rgba(251,191,36,0.2)';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.borderColor = 'rgba(251,191,36,0.3)';
+              e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+            }}>
+              <div style={{
+                fontSize: '2rem',
+                fontWeight: 700,
+                color: '#fbbf24',
+                marginBottom: '1rem'
+              }}>
+                {donation.amount}
+              </div>
+              <p style={{
+                fontSize: '1rem',
+                lineHeight: 1.4
+              }}>
+                {donation.impact}
+              </p>
+            </div>
+          ))}
+        </div>
+        
+        <div style={{
+          display: 'flex',
+          gap: '2rem',
+          justifyContent: 'center',
+          flexWrap: 'wrap'
+        }}>
+          <button className="btn-donate" style={{
+            fontSize: '1.3rem',
+            padding: '18px 40px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem'
+          }}>
+            🔴 Donate Now
+          </button>
+          
+          <button className="btn-primary" style={{
+            fontSize: '1.3rem',
+            padding: '18px 40px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem'
+          }}>
+            🟢 Partner With Us
+          </button>
+        </div>
+      </div>
+    </section>
+
+    {/* Get Involved Section */}
+    <section style={{
+      background: 'var(--color-warm-gray)',
+      padding: '100px 0'
+    }}>
+      <div className="container-custom">
+        <h2 style={{
+          fontSize: 'clamp(2.5rem, 4vw, 3.5rem)',
+          fontFamily: 'Merriweather, serif',
+          textAlign: 'center',
+          marginBottom: '4rem',
+          color: '#7c3aed'
+        }}>
+          Join Our Mission
+        </h2>
+        
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+          gap: '2rem'
+        }}>
+          {[
+            {
+              icon: '🤝',
+              title: 'Volunteer',
+              description: 'Mentor or share your expertise',
+              cta: 'Get Started'
+            },
+            {
+              icon: '🤲',
+              title: 'Partner',
+              description: 'Collaborate to scale impact',
+              cta: 'Learn More'
+            },
+            {
+              icon: '🏢',
+              title: 'Corporate CSR',
+              description: 'Invest in future-ready education',
+              cta: 'Connect Now'
+            }
+          ].map((item, index) => (
+            <div key={index} className="card" style={{
+              padding: '3rem',
+              textAlign: 'center',
+              background: 'white',
+              border: '2px solid #e5e7eb',
+              animation: `fadeInUp 1s ease-out ${0.2 * index}s both`
+            }}>
+              <div style={{ fontSize: '4rem', marginBottom: '1.5rem' }}>{item.icon}</div>
+              <h3 style={{
+                fontSize: '1.5rem',
+                fontWeight: 700,
+                marginBottom: '1rem',
+                color: '#7c3aed'
+              }}>
+                {item.title}
+              </h3>
+              <p style={{
+                fontSize: '1.1rem',
+                marginBottom: '2rem',
+                color: '#374151',
+                lineHeight: 1.5
+              }}>
+                {item.description}
+              </p>
+              <button className="btn-secondary" style={{
+                fontSize: '1rem',
+                padding: '12px 24px'
+              }}>
+                {item.cta}
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Closing Manifesto */}
+    <section style={{
+      background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
+      padding: '100px 0',
+      textAlign: 'center',
+      color: '#1f2937'
+    }}>
+      <div className="container-custom" style={{ maxWidth: '800px' }}>
+        <blockquote style={{
+          fontSize: 'clamp(2rem, 4vw, 3rem)',
+          fontFamily: 'Merriweather, serif',
+          fontWeight: 700,
+          lineHeight: 1.3,
+          fontStyle: 'italic',
+          textShadow: '1px 1px 3px rgba(0,0,0,0.1)'
+        }}>
+          "When you give, you don't just fund education—you rewrite destinies."
+        </blockquote>
+      </div>
     </section>
 
     {/* Impact Numbers */}
@@ -2646,10 +3248,10 @@ function App() {
           <SafeHeader />
           <main style={{ flexGrow: 1 }}>
             <Routes>
-              <Route path="/" element={<SafeHome />} />
+              <Route path="/" element={<Home />} />
               <Route path="/about" element={<AboutUsPage />} />
               <Route path="/fellowship" element={<FellowshipPage />} />
-              <Route path="/stories" element={<StoriesPage />} />
+              <Route path="/stories" element={<Stories />} />
               <Route path="*" element={<SafeHome />} />
             </Routes>
           </main>

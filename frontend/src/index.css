@@ -5,15 +5,15 @@
 
 @layer base {
   :root {
-    /* Purple, White, and Yellow theme */
-    --color-primary: #7c3aed;    /* Rich purple - main brand */
-    --color-primary-light: #a855f7;
-    --color-primary-dark: #5b21b6;
-    --color-secondary: #fbbf24;  /* Bright yellow - accent */
-    --color-secondary-light: #fcd34d;
-    --color-secondary-dark: #f59e0b;
-    --color-accent: #eab308;     /* Golden yellow - highlights */
-    --color-accent-light: #facc15;
+    /* Dark Purple and Orange theme */
+    --color-primary: #4c1d95;    /* Deep purple - main brand */
+    --color-primary-light: #5b21b6;
+    --color-primary-dark: #3730a3;
+    --color-secondary: #c2410c;  /* Dark orange - accent */
+    --color-secondary-light: #ea580c;
+    --color-secondary-dark: #9a3412;
+    --color-accent: #9a3412;     /* Very dark orange - highlights */
+    --color-accent-light: #c2410c;
     --color-white: #ffffff;
     --color-warm-gray: #fefefe;
     --color-text-primary: #1f2937;
@@ -175,4 +175,84 @@
   .bg-primary { background: var(--color-primary); }
   .bg-secondary { background: var(--color-secondary); }
   .bg-accent { background: var(--color-accent); }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes zoomIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes gradientShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  @keyframes spin {
+    0% {
+      transform: scale(1.4) translateY(-5px) rotate(0deg);
+    }
+    100% {
+      transform: scale(1.4) translateY(-5px) rotate(360deg);
+    }
+  }
+
+  @keyframes earthSpin {
+    0% {
+      transform: scale(1.1) translateY(-5px) rotate(0deg);
+    }
+    100% {
+      transform: scale(1.1) translateY(-5px) rotate(360deg);
+    }
+  }
+
+  @keyframes rocketFly {
+    0% {
+      transform: scale(1.4) translate(0px, 0px);
+    }
+    25% {
+      transform: scale(1.5) translate(30px, -20px);
+    }
+    50% {
+      transform: scale(1.6) translate(-20px, -40px);
+    }
+    75% {
+      transform: scale(1.5) translate(25px, -25px);
+    }
+    100% {
+      transform: scale(1.4) translate(0px, 0px);
+    }
+  }
 }
