@@ -1,177 +1,313 @@
 package org.zikshana.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "donations")
 public class Donation extends BaseEntity {
-    
-    @NotBlank
-    @Column(name = "donor_name")
+
+    @NotBlank(message = "Donor name is required")
+    @Size(max = 100)
+    @Column(name = "donor_name", length = 100, nullable = false)
     private String donorName;
-    
-    @Email
-    @Column(name = "donor_email")
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid email format")
+    @Size(max = 150)
+    @Column(name = "donor_email", length = 150, nullable = false)
     private String donorEmail;
-    
-    @Column(name = "donor_phone")
-    private String donorPhone;
-    
-    @NotNull
-    @Positive
-    @Column(precision = 10, scale = 2)
+
+    @NotBlank(message = "Mobile number is required")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Mobile number must be 10 digits")
+    @Column(name = "donor_mobile", length = 15, nullable = false)
+    private String donorMobile;
+
+    @NotBlank(message = "Address is required")
+    @Column(name = "donor_address", columnDefinition = "TEXT", nullable = false)
+    private String donorAddress;
+
+    @NotBlank(message = "Pincode is required")
+    @Pattern(regexp = "^[0-9]{6}$", message = "Pincode must be 6 digits")
+    @Column(name = "donor_pincode", length = 6, nullable = false)
+    private String donorPincode;
+
+    @Size(max = 10)
+    @Pattern(regexp = "^$|^[A-Z]{5}[0-9]{4}[A-Z]{1}$", message = "Invalid PAN format")
+    @Column(name = "donor_pan", length = 10)
+    private String donorPan;
+
+    @NotNull(message = "Donation amount is required")
+    @DecimalMin(value = "100.0", message = "Minimum donation amount is ₹100")
+    @Column(name = "amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal amount;
-    
-    @Enumerated(EnumType.STRING)
-    private DonationType type = DonationType.ONE_TIME;
-    
-    @Enumerated(EnumType.STRING)
-    private DonationStatus status = DonationStatus.PENDING;
-    
-    @Column(name = "payment_method")
-    private String paymentMethod;
-    
-    @Column(name = "transaction_id")
-    private String transactionId;
-    
-    @Column(name = "razorpay_order_id")
-    private String razorpayOrderId;
-    
-    @Column(name = "razorpay_payment_id")
-    private String razorpayPaymentId;
-    
+
+    @Column(name = "tip_amount", precision = 10, scale = 2)
+    private BigDecimal tipAmount = BigDecimal.ZERO;
+
+    @Column(name = "total_amount", nullable = false, precision = 10, scale = 2)
+    private BigDecimal totalAmount;
+
+    @Column(name = "is_anonymous")
+    private Boolean isAnonymous = false;
+
+    @Column(name = "whatsapp_updates")
+    private Boolean whatsappUpdates = true;
+
+    @Column(name = "is_indian_citizen", nullable = false)
+    private Boolean isIndianCitizen = true;
+
+    @Column(name = "gift_card_code")
+    private String giftCardCode;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "program_id")
     private Program program;
-    
-    @Column(columnDefinition = "TEXT")
-    private String message;
-    
-    @Column(name = "is_anonymous")
-    private Boolean isAnonymous = false;
-    
+
+    @Column(name = "transaction_id", unique = true)
+    private String transactionId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_status", nullable = false)
+    private PaymentStatus paymentStatus = PaymentStatus.PENDING;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_method")
+    private PaymentMethod paymentMethod;
+
+    @Column(name = "razorpay_order_id")
+    private String razorpayOrderId;
+
+    @Column(name = "razorpay_payment_id")
+    private String razorpayPaymentId;
+
+    @Column(name = "razorpay_signature")
+    private String razorpaySignature;
+
+    @Column(name = "tax_certificate_issued")
+    private Boolean taxCertificateIssued = false;
+
+    @Column(name = "tax_certificate_number")
+    private String taxCertificateNumber;
+
+    @Column(name = "notes", columnDefinition = "TEXT")
+    private String notes;
+
     // Getters and Setters
+
     public String getDonorName() {
         return donorName;
     }
-    
+
     public void setDonorName(String donorName) {
         this.donorName = donorName;
     }
-    
+
     public String getDonorEmail() {
         return donorEmail;
     }
-    
+
     public void setDonorEmail(String donorEmail) {
         this.donorEmail = donorEmail;
     }
-    
-    public String getDonorPhone() {
-        return donorPhone;
+
+    public String getDonorMobile() {
+        return donorMobile;
     }
-    
-    public void setDonorPhone(String donorPhone) {
-        this.donorPhone = donorPhone;
+
+    public void setDonorMobile(String donorMobile) {
+        this.donorMobile = donorMobile;
     }
-    
+
+    public String getDonorAddress() {
+        return donorAddress;
+    }
+
+    public void setDonorAddress(String donorAddress) {
+        this.donorAddress = donorAddress;
+    }
+
+    public String getDonorPincode() {
+        return donorPincode;
+    }
+
+    public void setDonorPincode(String donorPincode) {
+        this.donorPincode = donorPincode;
+    }
+
+    public String getDonorPan() {
+        return donorPan;
+    }
+
+    public void setDonorPan(String donorPan) {
+        this.donorPan = donorPan;
+    }
+
     public BigDecimal getAmount() {
         return amount;
     }
-    
+
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
-    
-    public DonationType getType() {
-        return type;
+
+    public BigDecimal getTipAmount() {
+        return tipAmount;
     }
-    
-    public void setType(DonationType type) {
-        this.type = type;
+
+    public void setTipAmount(BigDecimal tipAmount) {
+        this.tipAmount = tipAmount;
     }
-    
-    public DonationStatus getStatus() {
-        return status;
+
+    public BigDecimal getTotalAmount() {
+        return totalAmount;
     }
-    
-    public void setStatus(DonationStatus status) {
-        this.status = status;
+
+    public void setTotalAmount(BigDecimal totalAmount) {
+        this.totalAmount = totalAmount;
     }
-    
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-    
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-    
-    public String getTransactionId() {
-        return transactionId;
-    }
-    
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
-    
-    public String getRazorpayOrderId() {
-        return razorpayOrderId;
-    }
-    
-    public void setRazorpayOrderId(String razorpayOrderId) {
-        this.razorpayOrderId = razorpayOrderId;
-    }
-    
-    public String getRazorpayPaymentId() {
-        return razorpayPaymentId;
-    }
-    
-    public void setRazorpayPaymentId(String razorpayPaymentId) {
-        this.razorpayPaymentId = razorpayPaymentId;
-    }
-    
-    public Program getProgram() {
-        return program;
-    }
-    
-    public void setProgram(Program program) {
-        this.program = program;
-    }
-    
-    public String getMessage() {
-        return message;
-    }
-    
-    public void setMessage(String message) {
-        this.message = message;
-    }
-    
+
     public Boolean getIsAnonymous() {
         return isAnonymous;
     }
-    
+
     public void setIsAnonymous(Boolean isAnonymous) {
         this.isAnonymous = isAnonymous;
     }
-    
-    public enum DonationType {
-        ONE_TIME,
-        MONTHLY,
-        QUARTERLY,
-        ANNUAL
+
+    public Boolean getWhatsappUpdates() {
+        return whatsappUpdates;
     }
-    
-    public enum DonationStatus {
+
+    public void setWhatsappUpdates(Boolean whatsappUpdates) {
+        this.whatsappUpdates = whatsappUpdates;
+    }
+
+    public Boolean getIsIndianCitizen() {
+        return isIndianCitizen;
+    }
+
+    public void setIsIndianCitizen(Boolean isIndianCitizen) {
+        this.isIndianCitizen = isIndianCitizen;
+    }
+
+    public String getGiftCardCode() {
+        return giftCardCode;
+    }
+
+    public void setGiftCardCode(String giftCardCode) {
+        this.giftCardCode = giftCardCode;
+    }
+
+    public Program getProgram() {
+        return program;
+    }
+
+    public void setProgram(Program program) {
+        this.program = program;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
+
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getRazorpayOrderId() {
+        return razorpayOrderId;
+    }
+
+    public void setRazorpayOrderId(String razorpayOrderId) {
+        this.razorpayOrderId = razorpayOrderId;
+    }
+
+    public String getRazorpayPaymentId() {
+        return razorpayPaymentId;
+    }
+
+    public void setRazorpayPaymentId(String razorpayPaymentId) {
+        this.razorpayPaymentId = razorpayPaymentId;
+    }
+
+    public String getRazorpaySignature() {
+        return razorpaySignature;
+    }
+
+    public void setRazorpaySignature(String razorpaySignature) {
+        this.razorpaySignature = razorpaySignature;
+    }
+
+    public Boolean getTaxCertificateIssued() {
+        return taxCertificateIssued;
+    }
+
+    public void setTaxCertificateIssued(Boolean taxCertificateIssued) {
+        this.taxCertificateIssued = taxCertificateIssued;
+    }
+
+    public String getTaxCertificateNumber() {
+        return taxCertificateNumber;
+    }
+
+    public void setTaxCertificateNumber(String taxCertificateNumber) {
+        this.taxCertificateNumber = taxCertificateNumber;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    // Lifecycle callbacks
+    @PrePersist
+    @PreUpdate
+    private void calculateTotalAmount() {
+        if (amount != null) {
+            if (tipAmount == null) {
+                tipAmount = BigDecimal.ZERO;
+            }
+            totalAmount = amount.add(tipAmount);
+        }
+    }
+
+    // Enums
+    public enum PaymentStatus {
         PENDING,
-        COMPLETED,
+        PROCESSING,
+        SUCCESS,
         FAILED,
         REFUNDED
+    }
+
+    public enum PaymentMethod {
+        CARD,
+        UPI,
+        NET_BANKING,
+        WALLET,
+        BANK_TRANSFER,
+        OTHER
     }
 }

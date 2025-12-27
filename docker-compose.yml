@@ -1,81 +1,83 @@
-version: '3.8'
-
 services:
   # PostgreSQL Database
   postgres:
     image: postgres:15-alpine
-    container_name: zikshana_db
+    container_name: zikshana-postgres
+    restart: unless-stopped
     environment:
-      POSTGRES_DB: zikshana_db
-      POSTGRES_USER: zikshana_user
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ${POSTGRES_DB:-zikshana}
+      POSTGRES_USER: ${POSTGRES_USER:-zikshana}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./backend/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-zikshana}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
-      - zikshana_network
-    restart: unless-stopped
+      - zikshana-network
 
   # Spring Boot Backend
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: zikshana_backend
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - DB_USERNAME=zikshana_user
-      - DB_PASSWORD=password
-      - JWT_SECRET=ZikshanaSecretKeyForJWTTokenGeneration2024Docker
-    ports:
-      - "8080:8080"
-    depends_on:
-      - postgres
-    networks:
-      - zikshana_network
+    container_name: zikshana-backend
     restart: unless-stopped
-    volumes:
-      - ./backend/logs:/app/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-zikshana}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-zikshana}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_HOST: ${MAIL_HOST:-smtp.gmail.com}
+      MAIL_PORT: ${MAIL_PORT:-587}
+      JWT_SECRET: ${JWT_SECRET:-ZikshanaSecretKeyForJWTTokenGeneration2024}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000,http://localhost:80}
+      RAZORPAY_KEY_ID: ${RAZORPAY_KEY_ID}
+      RAZORPAY_KEY_SECRET: ${RAZORPAY_KEY_SECRET}
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    networks:
+      - zikshana-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/api/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   # React Frontend
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: zikshana_frontend
-    ports:
-      - "3000:3000"
-    environment:
-      - REACT_APP_API_URL=http://localhost:8080/api
+    container_name: zikshana-frontend
+    restart: unless-stopped
     depends_on:
       - backend
+    ports:
+      - "${FRONTEND_PORT:-80}:80"
     networks:
-      - zikshana_network
-    restart: unless-stopped
+      - zikshana-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
-  # Nginx Reverse Proxy
-  nginx:
-    image: nginx:alpine
-    container_name: zikshana_nginx
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./docker/ssl:/etc/nginx/ssl
-    depends_on:
-      - frontend
-      - backend
-    networks:
-      - zikshana_network
-    restart: unless-stopped
+networks:
+  zikshana-network:
+    driver: bridge
 
 volumes:
   postgres_data:
-
-networks:
-  zikshana_network:
-    driver: bridge
+    driver: local

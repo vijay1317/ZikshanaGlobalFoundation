@@ -14,7 +14,7 @@ import {
 
 const Footer = () => {
   const quickLinks = [
-    { name: 'About Us', href: '/about' },
+    { name: 'About Us', href: '/' },
     { name: 'Our Programs', href: '/programs' },
     { name: 'Get Involved', href: '/get-involved' },
     { name: 'Blog', href: '/blog' },
@@ -173,7 +173,7 @@ const Footer = () => {
                 Privacy Policy
               </Link>
               <Link to="/terms" className="text-neutral-400 hover:text-white transition-colors duration-200">
-                Terms of Service
+                Terms and Conditions
               </Link>
             </div>
           </div>

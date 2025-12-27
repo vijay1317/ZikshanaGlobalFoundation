@@ -1,13 +1,14 @@
-# Build stage
-FROM node:18-alpine as build
+# Multi-stage build for React frontend
 
+# Stage 1: Build
+FROM node:20-alpine AS build
 WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production
+# Install ALL dependencies (including devDependencies for build)
+RUN npm ci
 
 # Copy source code
 COPY . .
@@ -15,21 +16,25 @@ COPY . .
 # Build the application
 RUN npm run build
 
-# Production stage
+# Stage 2: Production with nginx
 FROM nginx:alpine
+WORKDIR /usr/share/nginx/html
 
-# Copy built assets from build stage
-COPY --from=build /app/dist /usr/share/nginx/html
+# Remove default nginx content
+RUN rm -rf ./*
+
+# Copy built app from build stage
+COPY --from=build /app/dist .
 
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port
-EXPOSE 3000
+EXPOSE 80
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:3000 || exit 1
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost/ || exit 1
 
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]

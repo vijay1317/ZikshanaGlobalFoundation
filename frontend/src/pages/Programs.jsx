@@ -1,293 +1,1218 @@
-import { Helmet } from 'react-helmet-async'
-import { motion } from 'framer-motion'
-import { GraduationCap, Heart, Home, Users, MapPin, Calendar, ArrowRight } from 'lucide-react'
+import React, { useState, useEffect, useRef } from 'react';
+import { Helmet } from 'react-helmet-async';
+import bannerImage from '/src/assets/IMG_1493.HEIC.jpg';
+
+// Scroll Reveal Component
+const ScrollReveal = ({ children, delay = 0, direction = 'up' }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const elementRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+
+    if (elementRef.current) {
+      observer.observe(elementRef.current);
+    }
+
+    return () => {
+      if (elementRef.current) {
+        observer.unobserve(elementRef.current);
+      }
+    };
+  }, []);
+
+  const getTransform = () => {
+    if (isVisible) return 'translateY(0) translateX(0)';
+    switch (direction) {
+      case 'up':
+        return 'translateY(60px)';
+      case 'down':
+        return 'translateY(-60px)';
+      case 'left':
+        return 'translateX(60px)';
+      case 'right':
+        return 'translateX(-60px)';
+      default:
+        return 'translateY(60px)';
+    }
+  };
+
+  return (
+    <div
+      ref={elementRef}
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: getTransform(),
+        transition: `all 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${delay}s`,
+      }}
+    >
+      {children}
+    </div>
+  );
+};
 
 const Programs = () => {
   const programs = [
     {
-      id: 1,
-      icon: GraduationCap,
-      title: 'Education for All',
-      shortDescription: 'Quality education and learning resources for underserved communities.',
-      fullDescription: 'Our comprehensive education program focuses on providing quality learning opportunities to children and adults in underserved communities. We establish learning centers, provide educational materials, train teachers, and offer scholarship programs to ensure that financial constraints never become a barrier to education.',
-      image: 'https://images.unsplash.com/photo-1497486751825-1233686d5d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      stats: { 
-        beneficiaries: '8,500+', 
-        locations: '35',
-        schools: '12',
-        teachers: '45'
-      },
-      features: [
-        'Learning centers in rural communities',
-        'Teacher training and development',
-        'Scholarship programs for deserving students',
-        'Digital literacy initiatives',
-        'Adult education programs',
-        'Educational material distribution'
-      ],
-      impact: 'Over 8,500 children and adults have gained access to quality education, with 95% of our scholarship recipients successfully completing their studies.',
-      color: 'from-blue-500 to-indigo-600'
+      icon: '⚙️',
+      title: 'STEM & Robotics',
+      description: 'Building tomorrow\'s problem solvers through hands-on science and technology',
+      sectionId: 'stem-innovation'
     },
     {
-      id: 2,
-      icon: Heart,
-      title: 'Healthcare Access',
-      shortDescription: 'Essential healthcare services for remote and underserved areas.',
-      fullDescription: 'Our healthcare program brings essential medical services to communities that lack adequate healthcare infrastructure. Through mobile medical camps, health education programs, and partnerships with local healthcare providers, we ensure that quality healthcare is accessible to all.',
-      image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      stats: { 
-        beneficiaries: '12,000+', 
-        locations: '50',
-        camps: '120',
-        doctors: '25'
-      },
-      features: [
-        'Mobile medical camps',
-        'Preventive healthcare education',
-        'Maternal and child health programs',
-        'Health insurance facilitation',
-        'Medical equipment donation',
-        'Telemedicine consultations'
-      ],
-      impact: 'Over 12,000 individuals have received medical care through our programs, with significant improvements in community health indicators.',
-      color: 'from-red-500 to-pink-600'
+      icon: '🤖',
+      title: 'Coding',
+      description: 'Empowering young minds to create, program, and innovate',
+      sectionId: 'coding'
     },
     {
-      id: 3,
-      icon: Home,
-      title: 'Community Development',
-      shortDescription: 'Building sustainable infrastructure and economic opportunities.',
-      fullDescription: 'Our community development initiatives focus on building sustainable infrastructure and creating economic opportunities that strengthen entire communities. From water systems to economic development programs, we work with communities to identify and address their most pressing needs.',
-      image: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      stats: { 
-        beneficiaries: '15,000+', 
-        locations: '40',
-        projects: '85',
-        volunteers: '200'
-      },
-      features: [
-        'Clean water and sanitation projects',
-        'Infrastructure development',
-        'Economic development programs',
-        'Environmental conservation',
-        'Technology access initiatives',
-        'Community leadership training'
-      ],
-      impact: 'Over 15,000 community members have benefited from improved infrastructure and economic opportunities in their neighborhoods.',
-      color: 'from-green-500 to-emerald-600'
+      icon: '🌍',
+      title: 'Global Languages',
+      description: 'Opening doors to worldwide opportunities through multilingual fluency',
+      sectionId: 'global-languages'
     },
     {
-      id: 4,
-      icon: Users,
-      title: 'Women Empowerment',
-      shortDescription: 'Empowering women through skills and leadership development.',
-      fullDescription: 'Our women empowerment program focuses on providing women with the skills, knowledge, and opportunities they need to achieve economic independence and leadership roles in their communities. Through training programs, microfinance, and mentorship, we support women in building better futures.',
-      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      stats: { 
-        beneficiaries: '4,200+', 
-        locations: '25',
-        businesses: '150',
-        trainers: '15'
-      },
-      features: [
-        'Skills training and certification',
-        'Entrepreneurship development',
-        'Microfinance and credit access',
-        'Leadership development programs',
-        'Women\'s rights education',
-        'Mentorship networks'
-      ],
-      impact: 'Over 4,200 women have gained new skills and economic opportunities, with 150+ successful businesses launched.',
-      color: 'from-purple-500 to-violet-600'
+      icon: '🎤',
+      title: 'Public Speaking & Leadership',
+      description: 'Developing confident voices that will lead the next generation',
+      sectionId: 'public-speaking-leadership'
+    },
+    {
+      icon: '🧘',
+      title: 'Yoga & Well-being',
+      description: 'Nurturing mental health and physical wellness for holistic growth',
+      sectionId: 'yoga-wellbeing'
+    },
+    {
+      icon: '🚀',
+      title: 'Entrepreneurship',
+      description: 'Inspiring young entrepreneurs to turn dreams into reality',
+      sectionId: 'entrepreneurship'
     }
-  ]
+  ];
+
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   return (
     <>
       <Helmet>
         <title>Our Programs - Zikshana Global Foundation</title>
-        <meta name="description" content="Explore Zikshana Global Foundation's comprehensive programs in education, healthcare, community development, and women empowerment." />
+        <meta name="description" content="Discover our transformative programs in STEM, coding, robotics, languages, leadership, wellness, and entrepreneurship." />
       </Helmet>
 
-      {/* Hero Section */}
-      <section className="pt-20 pb-16 bg-gradient-to-br from-primary-600 to-secondary-600 text-white">
-        <div className="container-custom">
-          <motion.div
-            className="text-center"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-          >
-            <h1 className="text-4xl md:text-6xl font-display font-bold mb-6">
-              Our Impact
-              <span className="text-secondary-200"> Programs</span>
-            </h1>
-            <p className="text-xl max-w-3xl mx-auto leading-relaxed opacity-90">
-              Comprehensive initiatives designed to create lasting change in communities through education, healthcare, development, and empowerment.
-            </p>
-          </motion.div>
+      <style>
+        {`
+          @keyframes bannerZoom {
+            0% {
+              transform: scale(1);
+            }
+            100% {
+              transform: scale(1.1);
+            }
+          }
+        `}
+      </style>
+
+      {/* Hero Banner */}
+      <section style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        {/* Animated Background Layer */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: `url(${bannerImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          animation: 'bannerZoom 20s ease-in-out infinite alternate',
+          filter: 'contrast(1.3) saturate(1.2) sepia(0.35) brightness(1.1) hue-rotate(-5deg)',
+          zIndex: 0
+        }} />
+
+        {/* Warm Vintage Overlay */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.25) 0%, rgba(200, 120, 60, 0.15) 100%)',
+          mixBlendMode: 'multiply',
+          zIndex: 1,
+          pointerEvents: 'none'
+        }} />
+
+        {/* Additional Warm Glow */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'radial-gradient(circle at center, rgba(5, 5, 5, 0.15) 0%, transparent 70%)',
+          mixBlendMode: 'screen',
+          zIndex: 1,
+          pointerEvents: 'none'
+        }} />
+        <div style={{
+          position: 'absolute',
+          top: '15%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 2,
+          textAlign: 'center',
+          width: '90%',
+          maxWidth: '1000px',
+          padding: '2rem'
+        }}>
+          <h1 style={{
+            fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+            lineHeight: 1.3,
+            fontWeight: 900,
+            fontFamily: 'Merriweather, serif',
+            color: 'white',
+            textShadow: '4px 4px 8px rgba(0, 0, 0, 0.9), 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.6)',
+            marginBottom: '1rem',
+            letterSpacing: '0.5px'
+          }}>
+            "Empower Students with Skills for the 21st Century"
+          </h1>
+          <div style={{
+            width: '120px',
+            height: '4px',
+            background: 'linear-gradient(90deg, #fbbf24, #f59e0b)',
+            margin: '1.5rem auto',
+            borderRadius: '2px',
+            boxShadow: '0 4px 12px rgba(251, 191, 36, 0.8), 0 2px 6px rgba(0, 0, 0, 0.4)'
+          }} />
+          <p style={{
+            fontSize: 'clamp(1.9rem, 2vw, 1.5rem)',
+            lineHeight: 1.7,
+            fontWeight: 400,
+            color: 'white',
+            textShadow: '3px 3px 6px rgba(0, 0, 0, 0.9), 1px 1px 3px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.5)',
+            maxWidth: '800px',
+            margin: '0 auto',
+            letterSpacing: '0.3px'
+          }}>
+            Through our innovative teaching approach
+          </p>
         </div>
       </section>
 
-      {/* Programs Overview */}
-      <section className="section-padding bg-white">
-        <div className="container-custom">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            {programs.map((program, index) => (
-              <motion.div
-                key={program.id}
-                className="text-center group cursor-pointer"
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -5 }}
-              >
-                <div className={`w-20 h-20 bg-gradient-to-br ${program.color} rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                  <program.icon className="w-10 h-10 text-white" />
-                </div>
-                <h3 className="text-xl font-display font-semibold text-neutral-800 mb-4 group-hover:text-primary-600 transition-colors duration-200">
-                  {program.title}
-                </h3>
-                <p className="text-neutral-600 leading-relaxed mb-4">
-                  {program.shortDescription}
-                </p>
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <div className="font-semibold text-primary-600">{program.stats.beneficiaries}</div>
-                    <div className="text-neutral-500">Beneficiaries</div>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-secondary-600">{program.stats.locations}</div>
-                    <div className="text-neutral-500">Locations</div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Detailed Program Sections */}
-      {programs.map((program, index) => (
-        <section 
-          key={program.id} 
-          className={`section-padding ${index % 2 === 0 ? 'bg-neutral-50' : 'bg-white'}`}
-          id={program.title.toLowerCase().replace(/\s+/g, '-')}
-        >
+      {/* Programs Section - The Pillars of Transformation */}
+<section style={{
+          padding: '100px 0',
+          background: 'white'
+        }}>
           <div className="container-custom">
-            <div className={`grid grid-cols-1 lg:grid-cols-2 gap-16 items-center ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}>
-              <motion.div
-                className={index % 2 === 1 ? 'lg:order-2' : ''}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -60 : 60 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, ease: 'easeOut' }}
-                viewport={{ once: true }}
-              >
-                <div className="relative">
-                  <img
-                    src={program.image}
-                    alt={program.title}
-                    className="rounded-2xl shadow-2xl"
-                  />
-                  <div className={`absolute -bottom-6 -right-6 w-24 h-24 bg-gradient-to-br ${program.color} rounded-2xl flex items-center justify-center`}>
-                    <program.icon className="w-12 h-12 text-white" />
-                  </div>
-                </div>
-              </motion.div>
+            <ScrollReveal>
+              <h2
+      style={{
+        fontSize: "clamp(2.5rem, 4vw, 3.5rem)",
+        fontFamily: "Merriweather, serif",
+        textAlign: "center",
+        marginBottom: "4rem",
+        textShadow: "2px 2px 8px rgba(0,0,0,0.3)",
+      }}
+    >
+      Future-Ready Curriculum
+    </h2>
+            </ScrollReveal>
 
-              <motion.div
-                className={index % 2 === 1 ? 'lg:order-1' : ''}
-                initial={{ opacity: 0, x: index % 2 === 0 ? 60 : -60 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, ease: 'easeOut' }}
-                viewport={{ once: true }}
-              >
-                <h2 className="text-4xl md:text-5xl font-display font-bold text-neutral-800 mb-6">
-                  {program.title}
-                </h2>
-                <p className="text-lg text-neutral-600 leading-relaxed mb-8">
-                  {program.fullDescription}
-                </p>
-
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-                  {Object.entries(program.stats).map(([key, value]) => (
-                    <div key={key} className="text-center">
-                      <div className="text-2xl font-bold text-primary-600 mb-1">{value}</div>
-                      <div className="text-sm text-neutral-500 capitalize">{key}</div>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gridTemplateRows: 'repeat(2, 1fr)',
+              gap: '2rem',
+              maxWidth: '1200px',
+              margin: '0 auto',
+              '@media (max-width: 768px)': {
+                gridTemplateColumns: '1fr',
+                gridTemplateRows: 'repeat(6, 1fr)'
+              }
+            }}>
+              {[
+                {
+                  icon: '⚙️',
+                  title: 'STEM & Robotics',
+                  description: 'Hands-on science and technology projects that solve real-world problems',
+                  color: '#3730a3',
+                  hoverColor: '#92400e',
+                  sectionId: 'stem-innovation'
+                },
+                {
+                  icon: '🤖',
+                  title: 'Coding & ',
+                  description: 'Programming and robotics that turn students into creators and innovators',
+                  color: '#4c1d95',
+                  hoverColor: '#7c2d12',
+                  sectionId: 'coding-robotics'
+                },
+                {
+                  icon: '🌍',
+                  title: 'Global Languages',
+                  description: 'Multilingual fluency that opens doors to worldwide opportunities',
+                  color: '#9a3412',
+                  hoverColor: '#3730a3',
+                  sectionId: 'global-languages'
+                },
+                {
+                  icon: '🎤',
+                  title: 'Leadership',
+                  description: 'Public speaking and leadership skills that build confident voices',
+                  color: '#7c2d12',
+                  hoverColor: '#4c1d95',
+                  sectionId: 'public-speaking-leadership'
+                },
+                {
+                  icon: '🧘',
+                  title: 'Well-being',
+                  description: 'Mental health and wellness programs for holistic development',
+                  color: '#3730a3',
+                  hoverColor: '#92400e',
+                  sectionId: 'yoga-wellbeing'
+                },
+                {
+                  icon: '🚀',
+                  title: 'Entrepreneurship',
+                  description: 'Business skills and startup mentality that creates job makers, not job seekers',
+                  color: '#4c1d95',
+                  hoverColor: '#7c2d12',
+                  sectionId: 'entrepreneurship'
+                }
+              ].map((program, index) => (
+                <ScrollReveal key={index} delay={index * 0.1}>
+                  <div
+                    className="card"
+                    onClick={() => scrollToSection(program.sectionId)}
+                    style={{
+                  padding: '2.5rem',
+                  textAlign: 'center',
+                  border: 'none',
+                  borderRadius: '15px',
+                  transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                  cursor: 'pointer',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  background: `linear-gradient(135deg, ${program.color} 0%, ${program.hoverColor} 100%)`,
+                  color: 'white',
+                  transform: 'translateY(0) scale(1)',
+                  boxShadow: `0 10px 30px ${program.color}40`
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-25px) scale(1.08) rotateY(5deg)';
+                  e.currentTarget.style.boxShadow = `0 35px 80px ${program.color}60`;
+                  e.currentTarget.style.background = `linear-gradient(135deg, ${program.hoverColor} 0%, ${program.color} 100%)`;
+                  e.currentTarget.style.filter = 'brightness(1.1)';
+                  
+                  // Animate the icon based on program type
+                  const icon = e.currentTarget.querySelector('.program-icon');
+                  if (icon) {
+                    icon.style.transition = 'all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+                    icon.style.filter = 'drop-shadow(0 5px 15px rgba(0,0,0,0.3))';
+                    
+                    // Different animations for different icons
+                    if (program.title === 'STEM & Innovation') {
+                      // Spinning gear animation
+                      icon.style.transform = '';
+                      icon.style.animation = 'spin 2s linear infinite';
+                    } else if (program.title === 'Coding & Robotics') {
+                      // Robot stays as current animation
+                      icon.style.transform = 'scale(1.4) rotate(15deg) translateY(-5px)';
+                    } else if (program.title === 'Global Languages') {
+                      // Earth spinning animation
+                      icon.style.transform = '';
+                      icon.style.animation = 'earthSpin 3s linear infinite';
+                    } else if (program.title === 'Entrepreneurship') {
+                      // Rocket normal animation
+                      icon.style.transform = 'scale(1.4) rotate(15deg) translateY(-5px)';
+                    } else {
+                      // Default animation for other icons
+                      icon.style.transform = 'scale(1.4) rotate(15deg) translateY(-5px)';
+                    }
+                  }
+                  
+                  // Animate the title
+                  const title = e.currentTarget.querySelector('.program-title');
+                  if (title) {
+                    title.style.transform = 'translateY(-3px) scale(1.05)';
+                    title.style.textShadow = '0 3px 10px rgba(0,0,0,0.3)';
+                  }
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0) scale(1) rotateY(0deg)';
+                  e.currentTarget.style.boxShadow = `0 10px 30px ${program.color}40`;
+                  e.currentTarget.style.background = `linear-gradient(135deg, ${program.color} 0%, ${program.hoverColor} 100%)`;
+                  e.currentTarget.style.filter = 'brightness(1)';
+                  
+                  // Reset icon animation
+                  const icon = e.currentTarget.querySelector('.program-icon');
+                  if (icon) {
+                    icon.style.transform = 'scale(1) rotate(0deg) translateY(0px)';
+                    icon.style.filter = 'none';
+                    icon.style.animation = 'none';
+                  }
+                  
+                  // Reset title
+                  const title = e.currentTarget.querySelector('.program-title');
+                  if (title) {
+                    title.style.transform = 'translateY(0) scale(1)';
+                    title.style.textShadow = 'none';
+                  }
+                }}>
+                  {/* Background gradient on hover */}
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    background: `linear-gradient(135deg, ${program.color}05 0%, ${program.color}10 100%)`,
+                    opacity: 0,
+                    transition: 'opacity 0.3s ease',
+                    pointerEvents: 'none'
+                  }} className="card-bg" />
+                  
+                  <div style={{ position: 'relative', zIndex: 2 }}>
+                    <div className="program-icon" style={{ 
+                      fontSize: '3.5rem', 
+                      marginBottom: '1.5rem',
+                      transition: 'all 0.3s ease',
+                      display: 'inline-block'
+                    }}>
+                      {program.icon}
                     </div>
-                  ))}
-                </div>
-
-                <div className="mb-8">
-                  <h3 className="text-xl font-display font-semibold text-neutral-800 mb-4">Key Features</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {program.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-center space-x-2">
-                        <div className="w-2 h-2 bg-primary-500 rounded-full flex-shrink-0" />
-                        <span className="text-neutral-600">{feature}</span>
-                      </div>
-                    ))}
+                    <h3 className="program-title" style={{
+                      fontSize: '1.3rem',
+                      fontWeight: 700,
+                      marginBottom: '1rem',
+                      color: 'white',
+                      transition: 'all 0.3s ease'
+                    }}>
+                      {program.title}
+                    </h3>
+                    <p style={{
+                      fontSize: '1rem',
+                      lineHeight: 1.6,
+                      color: 'rgba(255, 255, 255, 0.9)'
+                    }}>
+                      {program.description}
+                    </p>
                   </div>
                 </div>
-
-                <div className="bg-gradient-to-r from-primary-50 to-secondary-50 p-6 rounded-xl mb-8">
-                  <h4 className="font-semibold text-neutral-800 mb-2">Impact Story</h4>
-                  <p className="text-neutral-600 leading-relaxed">
-                    {program.impact}
-                  </p>
-                </div>
-
-                <motion.button
-                  className="btn-primary flex items-center space-x-2"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <span>Get Involved</span>
-                  <ArrowRight className="w-5 h-5" />
-                </motion.button>
-              </motion.div>
+                </ScrollReveal>
+              ))}
             </div>
           </div>
         </section>
-      ))}
+
+
+
+      {/* Detailed Program Sections */}
+      {/* STEM & Innovation */}
+
+      <section id="stem-innovation" style={{
+          padding: '100px 0',
+          background: 'linear-gradient(135deg, #4c1d95 0%, #5b21b6 25%, #c2410c 75%, #9a3412 100%)',
+          backgroundSize: '400% 400%',
+          animation: 'gradientShift 25s ease-in-out infinite',
+          minHeight: '400px',
+          color: 'white',
+          position: 'relative'
+        }}>
+          {/* Top Smoke Blend Effect - Enhanced */}
+          <div style={{
+            position: 'absolute',
+            top: '-5px',
+            left: 0,
+            right: 0,
+            height: '200px',
+            background: `
+              radial-gradient(ellipse 100% 120% at 15% -20%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 30%, transparent 80%),
+              radial-gradient(ellipse 90% 110% at 45% -15%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 35%, transparent 85%),
+              radial-gradient(ellipse 100% 120% at 75% -20%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.75) 30%, transparent 80%),
+              radial-gradient(ellipse 85% 100% at 30% -10%, rgba(255,255,255,0.9) 0%, transparent 75%),
+              radial-gradient(ellipse 85% 100% at 65% -10%, rgba(255,255,255,0.85) 0%, transparent 75%),
+              linear-gradient(to bottom, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.5) 40%, rgba(255,255,255,0.2) 70%, transparent 100%)
+            `,
+            pointerEvents: 'none',
+            zIndex: 1,
+            filter: 'blur(2px)'
+          }} />
+
+          {/* Bottom Smoke Blend Effect - Enhanced */}
+          <div style={{
+            position: 'absolute',
+            bottom: '-5px',
+            left: 0,
+            right: 0,
+            height: '200px',
+            background: `
+              radial-gradient(ellipse 100% 120% at 20% 120%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 30%, transparent 80%),
+              radial-gradient(ellipse 90% 110% at 50% 115%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 35%, transparent 85%),
+              radial-gradient(ellipse 100% 120% at 80% 120%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.75) 30%, transparent 80%),
+              radial-gradient(ellipse 85% 100% at 35% 110%, rgba(255,255,255,0.9) 0%, transparent 75%),
+              radial-gradient(ellipse 85% 100% at 70% 110%, rgba(255,255,255,0.85) 0%, transparent 75%),
+              linear-gradient(to top, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.5) 40%, rgba(255,255,255,0.2) 70%, transparent 100%)
+            `,
+            pointerEvents: 'none',
+            zIndex: 1,
+            filter: 'blur(2px)'
+          }} />
+          <div className="container-custom" style={{ position: 'relative', zIndex: 2 }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+              gap: '4rem',
+              alignItems: 'center'
+            }}>
+              
+               <div style={{
+                              backgroundImage: `url("${bannerImage}")`,
+                              backgroundSize: 'cover',
+                              backgroundPosition: 'center',
+                              height: '500px',
+                              borderRadius: '15px',
+                              boxShadow: '0 15px 40px rgba(0,0,0,0.3)'
+                            }} />
+            
+           
+            {/* Right - Content */}
+            <div>
+              <h2 style={{
+                  fontSize: 'clamp(2rem, 3vw, 2.5rem)',
+                  fontFamily: 'Merriweather, serif',
+                  fontWeight: 700,
+                  marginBottom: '2rem',
+                  color: 'white',
+                  textTransform: 'uppercase',
+                  letterSpacing: '2px',
+                  textShadow: '2px 2px 4px rgba(6, 6, 6, 0.7)'
+                }}>
+                "STEM & Innovation"
+              </h2>
+              <p style={{
+                fontSize: '1.3rem',
+                lineHeight: 1.6,
+                color: '#e0e3eaff',
+                marginBottom: '1.5rem'
+              }}>
+                Building tomorrow's problem solvers through hands-on science and technology.
+                Our STEM program encourages students to explore, experiment, and innovate with
+                cutting-edge tools and methodologies. From robotics to environmental science,
+                students engage in real-world projects that foster critical thinking and creativity.
+              </p>
+              <ul style={{
+                fontSize: '1rem',
+                lineHeight: 1.8,
+                color: '#f3f7ffff',
+                listStyle: 'none',
+                padding: 0
+              }}>
+                <li style={{ marginBottom: '0.5rem' }}>✓ Hands-on experiments and projects</li>
+                <li style={{ marginBottom: '0.5rem' }}>✓ Real-world problem solving</li>
+                <li style={{ marginBottom: '0.5rem' }}>✓ Collaboration with industry experts</li>
+                <li style={{ marginBottom: '0.5rem' }}>✓ Innovation labs and maker spaces</li>
+              </ul>
+            </div>
+             
+            </div>
+          </div>
+        </section>
+
+      {/* Coding & Robotics */}
+     < section id="coding-robotics" style={{
+          padding: '100px 0',
+          background: 'linear-gradient(135deg, #4c1d95 0%, #5b21b6 25%, #c2410c 75%, #9a3412 100%)',
+          backgroundSize: '400% 400%',
+          animation: 'gradientShift 25s ease-in-out infinite',
+          minHeight: '400px',
+          color: 'white',
+          position: 'relative'
+        }}>
+          {/* Top Smoke Blend Effect - Enhanced */}
+          <div style={{
+            position: 'absolute',
+            top: '-5px',
+            left: 0,
+            right: 0,
+            height: '200px',
+            background: `
+              radial-gradient(ellipse 100% 120% at 15% -20%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 30%, transparent 80%),
+              radial-gradient(ellipse 90% 110% at 45% -15%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 35%, transparent 85%),
+              radial-gradient(ellipse 100% 120% at 75% -20%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.75) 30%, transparent 80%),
+              radial-gradient(ellipse 85% 100% at 30% -10%, rgba(255,255,255,0.9) 0%, transparent 75%),
+              radial-gradient(ellipse 85% 100% at 65% -10%, rgba(255,255,255,0.85) 0%, transparent 75%),
+              linear-gradient(to bottom, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.5) 40%, rgba(255,255,255,0.2) 70%, transparent 100%)
+            `,
+            pointerEvents: 'none',
+            zIndex: 1,
+            filter: 'blur(2px)'
+          }} />
+
+          {/* Bottom Smoke Blend Effect - Enhanced */}
+          <div style={{
+            position: 'absolute',
+            bottom: '-5px',
+            left: 0,
+            right: 0,
+            height: '200px',
+            background: `
+              radial-gradient(ellipse 100% 120% at 20% 120%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 30%, transparent 80%),
+              radial-gradient(ellipse 90% 110% at 50% 115%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 35%, transparent 85%),
+              radial-gradient(ellipse 100% 120% at 80% 120%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.75) 30%, transparent 80%),
+              radial-gradient(ellipse 85% 100% at 35% 110%, rgba(255,255,255,0.9) 0%, transparent 75%),
+              radial-gradient(ellipse 85% 100% at 70% 110%, rgba(255,255,255,0.85) 0%, transparent 75%),
+              linear-gradient(to top, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.5) 40%, rgba(255,255,255,0.2) 70%, transparent 100%)
+            `,
+            pointerEvents: 'none',
+            zIndex: 1,
+            filter: 'blur(2px)'
+          }} />
+          <div className="container-custom" style={{ position: 'relative', zIndex: 2 }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+              gap: '4rem',
+              alignItems: 'center'
+            }}>
+              
+             
+            
+           
+            {/* Right - Content */}
+            <div>
+              <h2 style={{
+                  fontSize: 'clamp(2rem, 3vw, 2.5rem)',
+                  fontFamily: 'Merriweather, serif',
+                  fontWeight: 700,
+                  marginBottom: '2rem',
+                  color: 'white',
+                  textTransform: 'uppercase',
+                  letterSpacing: '2px',
+                  textShadow: '2px 2px 4px rgba(6, 6, 6, 0.7)'
+                }}>
+                 "Coding & Robotics"
+              </h2>
+              <p style={{
+                fontSize: '1.3rem',
+                lineHeight: 1.6,
+                color: '#e0e3eaff',
+                marginBottom: '1.5rem'
+              }}>
+                Empowering young minds to create, program, and innovate in the digital age.
+                Students learn programming languages, computational thinking, and robotics through
+                interactive projects. Our curriculum covers everything from basic coding concepts
+                to advanced AI and machine learning applications.
+              </p>
+              <ul style={{
+                fontSize: '1rem',
+                lineHeight: 1.8,
+                color: '#f3f7ffff',
+                listStyle: 'none',
+                padding: 0
+              }}>
+                <li style={{ marginBottom: '0.5rem' }}>✓ Python, JavaScript, and Scratch programming</li>
+                <li style={{ marginBottom: '0.5rem' }}>✓ Robotics competitions and challenges</li>
+                <li style={{ marginBottom: '0.5rem' }}>✓ Game development and app creation</li>
+                <li style={{ marginBottom: '0.5rem' }}>✓ AI and machine learning basics</li>
+              </ul>
+            </div>
+              <div style={{
+                              backgroundImage: `url("${bannerImage}")`,
+                              backgroundSize: 'cover',
+                              backgroundPosition: 'center',
+                              height: '500px',
+                              borderRadius: '15px',
+                              boxShadow: '0 15px 40px rgba(0,0,0,0.3)'
+                            }} />
+             
+            </div>
+          </div>
+        </section>
+
+
+      {/* Global Languages */}
+       <section id="global-languages" style={{
+          padding: '100px 0',
+          background: 'linear-gradient(135deg, #4c1d95 0%, #5b21b6 25%, #c2410c 75%, #9a3412 100%)',
+          backgroundSize: '400% 400%',
+          animation: 'gradientShift 25s ease-in-out infinite',
+          minHeight: '400px',
+          color: 'white',
+          position: 'relative'
+        }}>
+          {/* Top Smoke Blend Effect - Enhanced */}
+          <div style={{
+            position: 'absolute',
+            top: '-5px',
+            left: 0,
+            right: 0,
+            height: '200px',
+            background: `
+              radial-gradient(ellipse 100% 120% at 15% -20%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 30%, transparent 80%),
+              radial-gradient(ellipse 90% 110% at 45% -15%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 35%, transparent 85%),
+              radial-gradient(ellipse 100% 120% at 75% -20%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.75) 30%, transparent 80%),
+              radial-gradient(ellipse 85% 100% at 30% -10%, rgba(255,255,255,0.9) 0%, transparent 75%),
+              radial-gradient(ellipse 85% 100% at 65% -10%, rgba(255,255,255,0.85) 0%, transparent 75%),
+              linear-gradient(to bottom, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.5) 40%, rgba(255,255,255,0.2) 70%, transparent 100%)
+            `,
+            pointerEvents: 'none',
+            zIndex: 1,
+            filter: 'blur(2px)'
+          }} />
+
+          {/* Bottom Smoke Blend Effect - Enhanced */}
+          <div style={{
+            position: 'absolute',
+            bottom: '-5px',
+            left: 0,
+            right: 0,
+            height: '200px',
+            background: `
+              radial-gradient(ellipse 100% 120% at 20% 120%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 30%, transparent 80%),
+              radial-gradient(ellipse 90% 110% at 50% 115%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 35%, transparent 85%),
+              radial-gradient(ellipse 100% 120% at 80% 120%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.75) 30%, transparent 80%),
+              radial-gradient(ellipse 85% 100% at 35% 110%, rgba(255,255,255,0.9) 0%, transparent 75%),
+              radial-gradient(ellipse 85% 100% at 70% 110%, rgba(255,255,255,0.85) 0%, transparent 75%),
+              linear-gradient(to top, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.5) 40%, rgba(255,255,255,0.2) 70%, transparent 100%)
+            `,
+            pointerEvents: 'none',
+            zIndex: 1,
+            filter: 'blur(2px)'
+          }} />
+          <div className="container-custom" style={{ position: 'relative', zIndex: 2 }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+              gap: '4rem',
+              alignItems: 'center'
+            }}>
+              
+               <div style={{
+                              backgroundImage: `url("${bannerImage}")`,
+                              backgroundSize: 'cover',
+                              backgroundPosition: 'center',
+                              height: '500px',
+                              borderRadius: '15px',
+                              boxShadow: '0 15px 40px rgba(0,0,0,0.3)'
+                            }} />
+            
+           
+            {/* Right - Content */}
+            <div>
+              <h2 style={{
+                  fontSize: 'clamp(2rem, 3vw, 2.5rem)',
+                  fontFamily: 'Merriweather, serif',
+                  fontWeight: 700,
+                  marginBottom: '2rem',
+                  color: 'white',
+                  textTransform: 'uppercase',
+                  letterSpacing: '2px',
+                  textShadow: '2px 2px 4px rgba(6, 6, 6, 0.7)'
+                }}>
+                "Global Languages"
+              </h2>
+              <p style={{
+                fontSize: '1.3rem',
+                lineHeight: 1.6,
+                color: '#e0e3eaff',
+                marginBottom: '1.5rem'
+              }}>
+                Opening doors to worldwide opportunities through multilingual fluency.
+                Students develop proficiency in multiple languages through immersive learning
+                experiences, cultural exchange programs, and practical communication skills.
+                We focus on languages that open global career opportunities.
+              </p>
+              <ul style={{
+                fontSize: '1rem',
+                lineHeight: 1.8,
+                color: '#f3f7ffff',
+                listStyle: 'none',
+                padding: 0
+              }}>
+                <li style={{ marginBottom: '0.5rem' }}>✓ English, Spanish, French, Mandarin</li>
+                <li style={{ marginBottom: '0.5rem' }}>✓ Cultural immersion activities</li>
+                <li style={{ marginBottom: '0.5rem' }}>✓ International collaboration projects</li>
+                <li style={{ marginBottom: '0.5rem' }}>✓ Professional communication skills</li>
+              </ul>
+            </div>
+             
+            </div>
+          </div>
+        </section>
+
+
+      {/* Public Speaking & Leadership */}
+      < section id="public-speaking-leadership" style={{
+          padding: '100px 0',
+          background: 'linear-gradient(135deg, #4c1d95 0%, #5b21b6 25%, #c2410c 75%, #9a3412 100%)',
+          backgroundSize: '400% 400%',
+          animation: 'gradientShift 25s ease-in-out infinite',
+          minHeight: '400px',
+          color: 'white',
+          position: 'relative'
+        }}>
+          {/* Top Smoke Blend Effect - Enhanced */}
+          <div style={{
+            position: 'absolute',
+            top: '-5px',
+            left: 0,
+            right: 0,
+            height: '200px',
+            background: `
+              radial-gradient(ellipse 100% 120% at 15% -20%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 30%, transparent 80%),
+              radial-gradient(ellipse 90% 110% at 45% -15%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 35%, transparent 85%),
+              radial-gradient(ellipse 100% 120% at 75% -20%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.75) 30%, transparent 80%),
+              radial-gradient(ellipse 85% 100% at 30% -10%, rgba(255,255,255,0.9) 0%, transparent 75%),
+              radial-gradient(ellipse 85% 100% at 65% -10%, rgba(255,255,255,0.85) 0%, transparent 75%),
+              linear-gradient(to bottom, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.5) 40%, rgba(255,255,255,0.2) 70%, transparent 100%)
+            `,
+            pointerEvents: 'none',
+            zIndex: 1,
+            filter: 'blur(2px)'
+          }} />
+
+          {/* Bottom Smoke Blend Effect - Enhanced */}
+          <div style={{
+            position: 'absolute',
+            bottom: '-5px',
+            left: 0,
+            right: 0,
+            height: '200px',
+            background: `
+              radial-gradient(ellipse 100% 120% at 20% 120%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 30%, transparent 80%),
+              radial-gradient(ellipse 90% 110% at 50% 115%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 35%, transparent 85%),
+              radial-gradient(ellipse 100% 120% at 80% 120%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.75) 30%, transparent 80%),
+              radial-gradient(ellipse 85% 100% at 35% 110%, rgba(255,255,255,0.9) 0%, transparent 75%),
+              radial-gradient(ellipse 85% 100% at 70% 110%, rgba(255,255,255,0.85) 0%, transparent 75%),
+              linear-gradient(to top, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.5) 40%, rgba(255,255,255,0.2) 70%, transparent 100%)
+            `,
+            pointerEvents: 'none',
+            zIndex: 1,
+            filter: 'blur(2px)'
+          }} />
+          <div className="container-custom" style={{ position: 'relative', zIndex: 2 }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+              gap: '4rem',
+              alignItems: 'center'
+            }}>
+              
+             
+            
+           
+            {/* Right - Content */}
+            <div>
+              <h2 style={{
+                  fontSize: 'clamp(2rem, 3vw, 2.5rem)',
+                  fontFamily: 'Merriweather, serif',
+                  fontWeight: 700,
+                  marginBottom: '2rem',
+                  color: 'white',
+                  textTransform: 'uppercase',
+                  letterSpacing: '2px',
+                  textShadow: '2px 2px 4px rgba(6, 6, 6, 0.7)'
+                }}>
+                 "Public Speaking & Leadership"
+              </h2>
+              <p style={{
+                fontSize: '1.3rem',
+                lineHeight: 1.6,
+                color: '#e0e3eaff',
+                marginBottom: '1.5rem'
+              }}>
+                Developing confident voices that will lead the next generation. Through debate
+                clubs, presentations, and leadership workshops, students build communication
+                skills, confidence, and the ability to inspire others. Our program prepares
+                students to become change-makers in their communities.
+              </p>
+              <ul style={{
+                fontSize: '1rem',
+                lineHeight: 1.8,
+                color: '#f3f7ffff',
+                listStyle: 'none',
+                padding: 0
+              }}>
+                 <li style={{ marginBottom: '0.5rem' }}>✓ Debate and public speaking clubs</li>
+                <li style={{ marginBottom: '0.5rem' }}>✓ Leadership development workshops</li>
+                <li style={{ marginBottom: '0.5rem' }}>✓ Community service projects</li>
+                <li style={{ marginBottom: '0.5rem' }}>✓ Mentorship and team building</li>
+              </ul>
+            </div>
+              <div style={{
+                              backgroundImage: `url("${bannerImage}")`,
+                              backgroundSize: 'cover',
+                              backgroundPosition: 'center',
+                              height: '500px',
+                              borderRadius: '15px',
+                              boxShadow: '0 15px 40px rgba(0,0,0,0.3)'
+                            }} />
+             
+            </div>
+          </div>
+        </section>
+
+     
+
+      {/* Yoga & Well-being */}
+      <section id="yoga-wellbeing" style={{
+          padding: '100px 0',
+          background: 'linear-gradient(135deg, #4c1d95 0%, #5b21b6 25%, #c2410c 75%, #9a3412 100%)',
+          backgroundSize: '400% 400%',
+          animation: 'gradientShift 25s ease-in-out infinite',
+          minHeight: '400px',
+          color: 'white',
+          position: 'relative'
+        }}>
+          {/* Top Smoke Blend Effect - Enhanced */}
+          <div style={{
+            position: 'absolute',
+            top: '-5px',
+            left: 0,
+            right: 0,
+            height: '200px',
+            background: `
+              radial-gradient(ellipse 100% 120% at 15% -20%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 30%, transparent 80%),
+              radial-gradient(ellipse 90% 110% at 45% -15%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 35%, transparent 85%),
+              radial-gradient(ellipse 100% 120% at 75% -20%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.75) 30%, transparent 80%),
+              radial-gradient(ellipse 85% 100% at 30% -10%, rgba(255,255,255,0.9) 0%, transparent 75%),
+              radial-gradient(ellipse 85% 100% at 65% -10%, rgba(255,255,255,0.85) 0%, transparent 75%),
+              linear-gradient(to bottom, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.5) 40%, rgba(255,255,255,0.2) 70%, transparent 100%)
+            `,
+            pointerEvents: 'none',
+            zIndex: 1,
+            filter: 'blur(2px)'
+          }} />
+
+          {/* Bottom Smoke Blend Effect - Enhanced */}
+          <div style={{
+            position: 'absolute',
+            bottom: '-5px',
+            left: 0,
+            right: 0,
+            height: '200px',
+            background: `
+              radial-gradient(ellipse 100% 120% at 20% 120%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 30%, transparent 80%),
+              radial-gradient(ellipse 90% 110% at 50% 115%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 35%, transparent 85%),
+              radial-gradient(ellipse 100% 120% at 80% 120%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.75) 30%, transparent 80%),
+              radial-gradient(ellipse 85% 100% at 35% 110%, rgba(255,255,255,0.9) 0%, transparent 75%),
+              radial-gradient(ellipse 85% 100% at 70% 110%, rgba(255,255,255,0.85) 0%, transparent 75%),
+              linear-gradient(to top, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.5) 40%, rgba(255,255,255,0.2) 70%, transparent 100%)
+            `,
+            pointerEvents: 'none',
+            zIndex: 1,
+            filter: 'blur(2px)'
+          }} />
+          <div className="container-custom" style={{ position: 'relative', zIndex: 2 }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+              gap: '4rem',
+              alignItems: 'center'
+            }}>
+              
+               <div style={{
+                              backgroundImage: `url("${bannerImage}")`,
+                              backgroundSize: 'cover',
+                              backgroundPosition: 'center',
+                              height: '500px',
+                              borderRadius: '15px',
+                              boxShadow: '0 15px 40px rgba(0,0,0,0.3)'
+                            }} />
+            
+           
+            {/* Right - Content */}
+            <div>
+              <h2 style={{
+                  fontSize: 'clamp(2rem, 3vw, 2.5rem)',
+                  fontFamily: 'Merriweather, serif',
+                  fontWeight: 700,
+                  marginBottom: '2rem',
+                  color: 'white',
+                  textTransform: 'uppercase',
+                  letterSpacing: '2px',
+                  textShadow: '2px 2px 4px rgba(6, 6, 6, 0.7)'
+                }}>
+                "Yoga & Well-being"
+              </h2>
+              <p style={{
+                fontSize: '1.3rem',
+                lineHeight: 1.6,
+                color: '#e0e3eaff',
+                marginBottom: '1.5rem'
+              }}>
+                Nurturing mental health and physical wellness for holistic growth. Our wellness
+                program integrates yoga, mindfulness, nutrition education, and mental health
+                support. Students learn to manage stress, build resilience, and maintain a
+                healthy lifestyle in today's fast-paced world.
+              </p>
+              <ul style={{
+                fontSize: '1rem',
+                lineHeight: 1.8,
+                color: '#f3f7ffff',
+                listStyle: 'none',
+                padding: 0
+              }}>
+                <li style={{ marginBottom: '0.5rem' }}>✓ Daily yoga and meditation sessions</li>
+                <li style={{ marginBottom: '0.5rem' }}>✓ Mental health awareness workshops</li>
+                <li style={{ marginBottom: '0.5rem' }}>✓ Nutrition and healthy lifestyle education</li>
+                <li style={{ marginBottom: '0.5rem' }}>✓ Stress management techniques</li>
+              </ul>
+            </div>
+             
+            </div>
+          </div>
+        </section>
+
+
+      {/* Entrepreneurship */}
+
+
+       < section id="entrepreneurship" style={{
+          padding: '100px 0',
+          background: 'linear-gradient(135deg, #4c1d95 0%, #5b21b6 25%, #c2410c 75%, #9a3412 100%)',
+          backgroundSize: '400% 400%',
+          animation: 'gradientShift 25s ease-in-out infinite',
+          minHeight: '400px',
+          color: 'white',
+          position: 'relative'
+        }}>
+          {/* Top Smoke Blend Effect - Enhanced */}
+          <div style={{
+            position: 'absolute',
+            top: '-5px',
+            left: 0,
+            right: 0,
+            height: '200px',
+            background: `
+              radial-gradient(ellipse 100% 120% at 15% -20%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 30%, transparent 80%),
+              radial-gradient(ellipse 90% 110% at 45% -15%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 35%, transparent 85%),
+              radial-gradient(ellipse 100% 120% at 75% -20%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.75) 30%, transparent 80%),
+              radial-gradient(ellipse 85% 100% at 30% -10%, rgba(255,255,255,0.9) 0%, transparent 75%),
+              radial-gradient(ellipse 85% 100% at 65% -10%, rgba(255,255,255,0.85) 0%, transparent 75%),
+              linear-gradient(to bottom, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.5) 40%, rgba(255,255,255,0.2) 70%, transparent 100%)
+            `,
+            pointerEvents: 'none',
+            zIndex: 1,
+            filter: 'blur(2px)'
+          }} />
+
+          {/* Bottom Smoke Blend Effect - Enhanced */}
+          <div style={{
+            position: 'absolute',
+            bottom: '-5px',
+            left: 0,
+            right: 0,
+            height: '200px',
+            background: `
+              radial-gradient(ellipse 100% 120% at 20% 120%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 30%, transparent 80%),
+              radial-gradient(ellipse 90% 110% at 50% 115%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 35%, transparent 85%),
+              radial-gradient(ellipse 100% 120% at 80% 120%, rgba(255,255,255,1) 0%, rgba(255,255,255,0.75) 30%, transparent 80%),
+              radial-gradient(ellipse 85% 100% at 35% 110%, rgba(255,255,255,0.9) 0%, transparent 75%),
+              radial-gradient(ellipse 85% 100% at 70% 110%, rgba(255,255,255,0.85) 0%, transparent 75%),
+              linear-gradient(to top, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.5) 40%, rgba(255,255,255,0.2) 70%, transparent 100%)
+            `,
+            pointerEvents: 'none',
+            zIndex: 1,
+            filter: 'blur(2px)'
+          }} />
+          <div className="container-custom" style={{ position: 'relative', zIndex: 2 }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+              gap: '4rem',
+              alignItems: 'center'
+            }}>
+              
+             
+            
+           
+            {/* Right - Content */}
+            <div>
+              <h2 style={{
+                  fontSize: 'clamp(2rem, 3vw, 2.5rem)',
+                  fontFamily: 'Merriweather, serif',
+                  fontWeight: 700,
+                  marginBottom: '2rem',
+                  color: 'white',
+                  textTransform: 'uppercase',
+                  letterSpacing: '2px',
+                  textShadow: '2px 2px 4px rgba(6, 6, 6, 0.7)'
+                }}>
+                 "Entrepreneurship"
+              </h2>
+              <p style={{
+                fontSize: '1.3rem',
+                lineHeight: 1.6,
+                color: '#e0e3eaff',
+                marginBottom: '1.5rem'
+              }}>
+                Inspiring young entrepreneurs to turn dreams into reality. Students learn business
+                fundamentals, financial literacy, innovation, and how to launch their own ventures.
+                Through mentorship from successful entrepreneurs and hands-on projects, students
+                develop the mindset and skills to create opportunities rather than just seeking them.
+              </p>
+              <ul style={{
+                fontSize: '1rem',
+                lineHeight: 1.8,
+                color: '#f3f7ffff',
+                listStyle: 'none',
+                padding: 0
+              }}>
+                 <li style={{ marginBottom: '0.5rem' }}>✓ Business plan development</li>
+                <li style={{ marginBottom: '0.5rem' }}>✓ Financial literacy and management</li>
+                <li style={{ marginBottom: '0.5rem' }}>✓ Startup incubation programs</li>
+                <li style={{ marginBottom: '0.5rem' }}>✓ Mentorship from industry leaders</li>
+              </ul>
+            </div>
+              <div style={{
+                              backgroundImage: `url("${bannerImage}")`,
+                              backgroundSize: 'cover',
+                              backgroundPosition: 'center',
+                              height: '500px',
+                              borderRadius: '15px',
+                              boxShadow: '0 15px 40px rgba(0,0,0,0.3)'
+                            }} />
+             
+            </div>
+          </div>
+        </section>
+     
+
+      {/* How We Make a Difference */}
+      <section style={{ padding: '80px 0', background: 'white' }}>
+        <div className="container-custom">
+          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <h2 style={{
+              color: '#7c3aed',
+              marginBottom: '1rem',
+              fontFamily: 'Merriweather, serif',
+              fontSize: 'clamp(2rem, 3vw, 2.5rem)'
+            }}>
+              How We Make a Difference
+            </h2>
+            <p style={{ fontSize: '1.2rem', color: '#6b7280', maxWidth: '600px', margin: '0 auto' }}>
+              Our comprehensive approach tackles the root causes of poverty and inequality
+            </p>
+          </div>
+
+          
+        </div>
+      </section>
 
       {/* Call to Action */}
-      <section className="section-padding bg-gradient-to-br from-primary-600 to-secondary-600 text-white">
-        <div className="container-custom text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
-              Be Part of the Change
-            </h2>
-            <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-              Whether through volunteering, donating, or partnering with us, there are many ways to get involved and make a difference.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.button
-                className="bg-white text-primary-600 hover:bg-neutral-100 px-8 py-4 rounded-lg font-medium text-lg"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Volunteer with Us
-              </motion.button>
-              <motion.button
-                className="border-2 border-white text-white hover:bg-white hover:text-primary-600 px-8 py-4 rounded-lg font-medium text-lg transition-colors duration-200"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Support Our Work
-              </motion.button>
-            </div>
-          </motion.div>
+      <section style={{
+        background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)',
+        padding: '80px 0',
+        color: 'white',
+        textAlign: 'center'
+      }}>
+        <div className="container-custom">
+          <h2 style={{
+            fontSize: '2.5rem',
+            marginBottom: '1rem',
+            fontFamily: 'Merriweather, serif'
+          }}>
+            Be the Change You Want to See
+          </h2>
+          <p style={{ fontSize: '1.3rem', marginBottom: '2rem', opacity: 0.9 }}>
+            Every contribution, no matter how small, creates ripples of positive change
+          </p>
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <button style={{
+              background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
+              color: '#1f2937',
+              border: 'none',
+              padding: '14px 28px',
+              borderRadius: '25px',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              fontSize: '1.1rem'
+            }}
+            onMouseOver={(e) => {
+              e.target.style.transform = 'scale(1.05)';
+              e.target.style.boxShadow = '0 8px 25px rgba(251,191,36,0.4)';
+            }}
+            onMouseOut={(e) => {
+              e.target.style.transform = 'scale(1)';
+              e.target.style.boxShadow = 'none';
+            }}>
+              Donate Now
+            </button>
+            <button style={{
+              background: 'transparent',
+              border: '2px solid white',
+              color: 'white',
+              padding: '14px 28px',
+              borderRadius: '25px',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              fontSize: '1.1rem'
+            }}
+            onMouseOver={(e) => {
+              e.target.style.background = 'white';
+              e.target.style.color = '#7c3aed';
+            }}
+            onMouseOut={(e) => {
+              e.target.style.background = 'transparent';
+              e.target.style.color = 'white';
+            }}>
+              Volunteer Us
+            </button>
+            <button style={{
+              background: 'transparent',
+              border: '2px solid white',
+              color: 'white',
+              padding: '14px 28px',
+              borderRadius: '25px',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              fontSize: '1.1rem'
+            }}
+            onMouseOver={(e) => {
+              e.target.style.background = 'white';
+              e.target.style.color = '#7c3aed';
+            }}
+            onMouseOut={(e) => {
+              e.target.style.background = 'transparent';
+              e.target.style.color = 'white';
+            }}>
+              Team Up
+            </button>
+          </div>
         </div>
       </section>
     </>
-  )
-}
+  );
+};
 
-export default Programs
+export default Programs;

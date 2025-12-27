@@ -1,31 +1,38 @@
-# Use OpenJDK 17 as base image
-FROM openjdk:17-jdk-slim
+# Multi-stage build for Spring Boot backend
 
-# Set working directory
+# Stage 1: Build
+FROM maven:3.9-eclipse-temurin-17 AS build
 WORKDIR /app
 
-# Install Maven
-RUN apt-get update && apt-get install -y maven && rm -rf /var/lib/apt/lists/*
-
-# Copy pom.xml and download dependencies
+# Copy pom.xml first for better layer caching
 COPY pom.xml .
-RUN mvn dependency:go-offline -B
 
 # Copy source code
 COPY src ./src
 
-# Build the application
-RUN mvn clean package -DskipTests
+# Build the application (dependencies will be downloaded during this step)
+RUN mvn clean package -DskipTests -B
 
-# Create logs directory
-RUN mkdir -p /app/logs
+# Stage 2: Runtime
+FROM eclipse-temurin:17-jre
+WORKDIR /app
+
+# Install wget for health checks
+RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
+
+# Create non-root user
+RUN groupadd -r spring && useradd -r -g spring spring
+USER spring:spring
+
+# Copy jar from build stage
+COPY --from=build /app/target/*.jar app.jar
 
 # Expose port
 EXPOSE 8080
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:8080/api/actuator/health || exit 1
+HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:8080/api/actuator/health || exit 1
 
 # Run the application
-CMD ["java", "-jar", "target/zikshana-backend-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
