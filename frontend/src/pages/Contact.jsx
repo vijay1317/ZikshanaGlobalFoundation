@@ -79,7 +79,7 @@ const Contact = () => {
   const [showWhatsAppTooltip, setShowWhatsAppTooltip] = useState(false);
 
   // WhatsApp configuration
-  const whatsappNumber = '919731113922'; // Zikshana's WhatsApp number
+  const whatsappNumber = '9196062 52607'; // Zikshana's WhatsApp number
   const whatsappMessage = 'Hello Zikshana Global Foundation! I would like to know more about your programs and how I can get involved.';
 
   const openWhatsAppChat = () => {
@@ -812,13 +812,24 @@ const Contact = () => {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                   <div>
                     <p style={{ fontSize: '0.9rem', color: '#6b7280', marginBottom: '0.3rem' }}>General Helpline</p>
-                    <a href="tel:+919731113922" style={{
+                    <a href="tel:+919606252607" style={{
                       fontSize: '1.15rem',
                       fontWeight: 600,
                       color: '#1f2937',
                       textDecoration: 'none'
                     }}>
-                      +91 9731113922
+                      +919606252607
+                    </a>
+                  </div>
+                  <div>
+                    <p style={{ fontSize: '0.9rem', color: '#6b7280', marginBottom: '0.3rem' }}>General Helpline</p>
+                    <a href="tel:+918747833368" style={{
+                      fontSize: '1.15rem',
+                      fontWeight: 600,
+                      color: '#1f2937',
+                      textDecoration: 'none'
+                    }}>
+                      +918747833368
                     </a>
                   </div>
                 </div>

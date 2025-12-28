@@ -25,6 +25,7 @@ spring:
     defer-datasource-initialization: false
 
   mail:
+    email: ${MAIL_FROM:}
     host: ${MAIL_HOST:smtp.gmail.com}
     port: ${MAIL_PORT:587}
     username: ${MAIL_USERNAME:}

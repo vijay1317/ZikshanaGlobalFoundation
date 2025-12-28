@@ -105,8 +105,8 @@ public class AuthController {
             User admin = new User();
             admin.setFirstName("Admin");
             admin.setLastName("User");
-            admin.setEmail("admin@zikshana.org");
-            admin.setPassword(passwordEncoder.encode("Admin@123"));
+            admin.setEmail("zikshanainfotech@gmail.com");
+            admin.setPassword(passwordEncoder.encode("zikshanainfotech@gmail.com"));
             admin.setPhone("9999999999");
             admin.setIsActive(true);
 
