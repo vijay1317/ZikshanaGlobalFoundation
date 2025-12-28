@@ -436,6 +436,37 @@
   }
 }
 
+/* ===== MOBILE NAVBAR MIRROR TRANSPARENT EFFECT ===== */
+@media screen and (max-width: 767px) {
+  nav[class*="fixed"] {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.25) 0%,
+      rgba(255, 255, 255, 0.15) 50%,
+      rgba(255, 255, 255, 0.25) 100%
+    ) !important;
+    backdrop-filter: blur(20px) saturate(200%) brightness(1.1) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(200%) brightness(1.1) !important;
+    box-shadow:
+      0 4px 30px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.2) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+  }
+
+  /* Mobile menu dropdown mirror effect */
+  nav [class*="DisclosurePanel"],
+  nav > div:last-child {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.3) 0%,
+      rgba(255, 255, 255, 0.2) 100%
+    ) !important;
+    backdrop-filter: blur(20px) saturate(200%) brightness(1.1) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(200%) brightness(1.1) !important;
+  }
+}
+
 /* ===== CRITICAL MOBILE LAYOUT FIXES ===== */
 /* Force all grids to single column on mobile - using class names */
 @media screen and (max-width: 768px) {

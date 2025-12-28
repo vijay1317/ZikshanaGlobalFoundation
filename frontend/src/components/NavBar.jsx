@@ -28,7 +28,7 @@ export default function NavBar() {
   const navigate = useNavigate()
 
   return (
-    <Disclosure as="nav" className="fixed top-0 left-0 right-0 z-[9999] bg-white shadow-md">
+    <Disclosure as="nav" className="fixed top-0 left-0 right-0 z-[9999] bg-white/70 backdrop-blur-md shadow-md md:bg-white md:backdrop-blur-none">
       <div className="mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between">
           {/* Logo */}
@@ -63,7 +63,7 @@ export default function NavBar() {
             {/* Donate Button */}
             <button
               onClick={() => navigate('/donate')}
-              className="rounded-full bg-purple-600 px-5 py-2.5 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-purple-700"
+              className="btn-donate rounded-full px-5 py-2.5 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5"
             >
               DONATE NOW
             </button>
@@ -85,12 +85,12 @@ export default function NavBar() {
           </div>
 
           {/* Mobile: Donate Button and Hamburger */}
-          <div className="flex items-center gap-3 md:hidden">
+          <div className="flex items-center gap-2 md:hidden">
             <button
               onClick={() => navigate('/donate')}
-              className="whitespace-nowrap rounded-full bg-purple-600 px-4 py-2 text-sm font-semibold text-white transition-all duration-300 hover:bg-purple-700"
+              className="btn-donate whitespace-nowrap rounded-full px-2.5 py-1 text-[10px] font-semibold text-white transition-all duration-300 !min-h-0"
             >
-              DONATE NOW
+              DONATE
             </button>
 
             {/* Mobile menu button */}
@@ -105,8 +105,8 @@ export default function NavBar() {
       </div>
 
       {/* Mobile Menu Panel */}
-      <DisclosurePanel className="md:hidden">
-        <div className="space-y-1 border-t border-gray-100 px-4 pb-4 pt-2">
+      <DisclosurePanel className="md:hidden bg-white/70 backdrop-blur-md">
+        <div className="space-y-1 border-t border-gray-100/50 px-4 pb-4 pt-2">
           {navigation.map((item) => (
             <DisclosureButton
               key={item.name}

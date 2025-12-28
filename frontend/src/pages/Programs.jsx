@@ -63,17 +63,18 @@ const ScrollReveal = ({ children, delay = 0, direction = 'up' }) => {
 
 const Programs = () => {
   const navigate = useNavigate();
+  const [activeCard, setActiveCard] = useState(null);
 
   const programs = [
     {
       icon: '⚙️',
-      title: 'STEM & Robotics',
+      title: 'STEM & Innovation',
       description: 'Building tomorrow\'s problem solvers through hands-on science and technology',
       sectionId: 'stem-innovation'
     },
     {
       icon: '🤖',
-      title: 'Coding',
+      title: 'Coding & Robotics',
       description: 'Empowering young minds to create, program, and innovate',
       sectionId: 'coding'
     },
@@ -307,128 +308,144 @@ const Programs = () => {
                   hoverColor: '#7c2d12',
                   sectionId: 'entrepreneurship'
                 }
-              ].map((program, index) => (
-                <ScrollReveal key={index} delay={index * 0.1}>
-                  <div
-                    className="card"
-                    onClick={() => scrollToSection(program.sectionId)}
-                    style={{
-                  padding: '2.5rem',
-                  textAlign: 'center',
-                  border: 'none',
-                  borderRadius: '15px',
-                  transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                  cursor: 'pointer',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  background: `linear-gradient(135deg, ${program.color} 0%, ${program.hoverColor} 100%)`,
-                  color: 'white',
-                  transform: 'translateY(0) scale(1)',
-                  boxShadow: `0 10px 30px ${program.color}40`
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-25px) scale(1.08) rotateY(5deg)';
-                  e.currentTarget.style.boxShadow = `0 35px 80px ${program.color}60`;
-                  e.currentTarget.style.background = `linear-gradient(135deg, ${program.hoverColor} 0%, ${program.color} 100%)`;
-                  e.currentTarget.style.filter = 'brightness(1.1)';
-                  
-                  // Animate the icon based on program type
-                  const icon = e.currentTarget.querySelector('.program-icon');
+              ].map((program, index) => {
+                const isActive = activeCard === index;
+
+                const handleActivate = (e) => {
+                  const card = e.currentTarget;
+                  card.style.transform = 'translateY(-15px) scale(1.05)';
+                  card.style.boxShadow = `0 35px 80px ${program.color}60`;
+                  card.style.background = `linear-gradient(135deg, ${program.hoverColor} 0%, ${program.color} 100%)`;
+                  card.style.filter = 'brightness(1.1)';
+
+                  const icon = card.querySelector('.program-icon');
                   if (icon) {
                     icon.style.transition = 'all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
                     icon.style.filter = 'drop-shadow(0 5px 15px rgba(0,0,0,0.3))';
-                    
-                    // Different animations for different icons
-                    if (program.title === 'STEM & Innovation') {
-                      // Spinning gear animation
-                      icon.style.transform = '';
-                      icon.style.animation = 'spin 2s linear infinite';
-                    } else if (program.title === 'Coding & Robotics') {
-                      // Robot stays as current animation
-                      icon.style.transform = 'scale(1.4) rotate(15deg) translateY(-5px)';
-                    } else if (program.title === 'Global Languages') {
-                      // Earth spinning animation
-                      icon.style.transform = '';
-                      icon.style.animation = 'earthSpin 3s linear infinite';
-                    } else if (program.title === 'Entrepreneurship') {
-                      // Rocket normal animation
-                      icon.style.transform = 'scale(1.4) rotate(15deg) translateY(-5px)';
-                    } else {
-                      // Default animation for other icons
-                      icon.style.transform = 'scale(1.4) rotate(15deg) translateY(-5px)';
-                    }
+                    icon.style.transform = 'scale(1.4) rotate(15deg) translateY(-5px)';
                   }
-                  
-                  // Animate the title
-                  const title = e.currentTarget.querySelector('.program-title');
+
+                  const title = card.querySelector('.program-title');
                   if (title) {
                     title.style.transform = 'translateY(-3px) scale(1.05)';
                     title.style.textShadow = '0 3px 10px rgba(0,0,0,0.3)';
                   }
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0) scale(1) rotateY(0deg)';
-                  e.currentTarget.style.boxShadow = `0 10px 30px ${program.color}40`;
-                  e.currentTarget.style.background = `linear-gradient(135deg, ${program.color} 0%, ${program.hoverColor} 100%)`;
-                  e.currentTarget.style.filter = 'brightness(1)';
-                  
-                  // Reset icon animation
-                  const icon = e.currentTarget.querySelector('.program-icon');
+                };
+
+                const handleDeactivate = (e) => {
+                  const card = e.currentTarget;
+                  card.style.transform = 'translateY(0) scale(1)';
+                  card.style.boxShadow = `0 10px 30px ${program.color}40`;
+                  card.style.background = `linear-gradient(135deg, ${program.color} 0%, ${program.hoverColor} 100%)`;
+                  card.style.filter = 'brightness(1)';
+
+                  const icon = card.querySelector('.program-icon');
                   if (icon) {
                     icon.style.transform = 'scale(1) rotate(0deg) translateY(0px)';
                     icon.style.filter = 'none';
                     icon.style.animation = 'none';
                   }
-                  
-                  // Reset title
-                  const title = e.currentTarget.querySelector('.program-title');
+
+                  const title = card.querySelector('.program-title');
                   if (title) {
                     title.style.transform = 'translateY(0) scale(1)';
                     title.style.textShadow = 'none';
                   }
-                }}>
-                  {/* Background gradient on hover */}
-                  <div style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    background: `linear-gradient(135deg, ${program.color}05 0%, ${program.color}10 100%)`,
-                    opacity: 0,
-                    transition: 'opacity 0.3s ease',
-                    pointerEvents: 'none'
-                  }} className="card-bg" />
-                  
-                  <div style={{ position: 'relative', zIndex: 2 }}>
-                    <div className="program-icon" style={{ 
-                      fontSize: '3.5rem', 
-                      marginBottom: '1.5rem',
-                      transition: 'all 0.3s ease',
-                      display: 'inline-block'
-                    }}>
-                      {program.icon}
-                    </div>
-                    <h3 className="program-title" style={{
-                      fontSize: '1.3rem',
-                      fontWeight: 700,
-                      marginBottom: '1rem',
+                };
+
+                return (
+                <ScrollReveal key={index} delay={index * 0.1}>
+                  <div
+                    className="program-card"
+                    onClick={() => {
+                      if (activeCard === index) {
+                        scrollToSection(program.sectionId);
+                      } else {
+                        setActiveCard(index);
+                      }
+                    }}
+                    style={{
+                      padding: '2.5rem',
+                      textAlign: 'center',
+                      border: 'none',
+                      borderRadius: '15px',
+                      transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                      cursor: 'pointer',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      background: isActive
+                        ? `linear-gradient(135deg, ${program.hoverColor} 0%, ${program.color} 100%)`
+                        : `linear-gradient(135deg, ${program.color} 0%, ${program.hoverColor} 100%)`,
                       color: 'white',
-                      transition: 'all 0.3s ease'
-                    }}>
-                      {program.title}
-                    </h3>
-                    <p style={{
-                      fontSize: '1rem',
-                      lineHeight: 1.6,
-                      color: 'rgba(255, 255, 255, 0.9)'
-                    }}>
-                      {program.description}
-                    </p>
+                      transform: isActive ? 'translateY(-15px) scale(1.05)' : 'translateY(0) scale(1)',
+                      boxShadow: isActive
+                        ? `0 35px 80px ${program.color}60`
+                        : `0 10px 30px ${program.color}40`,
+                      filter: isActive ? 'brightness(1.1)' : 'brightness(1)'
+                    }}
+                    onMouseEnter={handleActivate}
+                    onMouseLeave={handleDeactivate}
+                    onTouchStart={(e) => {
+                      setActiveCard(index);
+                      handleActivate(e);
+                    }}
+                  >
+                    {/* Background gradient on hover */}
+                    <div style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      background: `linear-gradient(135deg, ${program.color}05 0%, ${program.color}10 100%)`,
+                      opacity: 0,
+                      transition: 'opacity 0.3s ease',
+                      pointerEvents: 'none'
+                    }} className="card-bg" />
+
+                    <div style={{ position: 'relative', zIndex: 2 }}>
+                      <div className="program-icon" style={{
+                        fontSize: '3.5rem',
+                        marginBottom: '1.5rem',
+                        transition: 'all 0.3s ease',
+                        display: 'inline-block',
+                        transform: isActive ? 'scale(1.4) rotate(15deg) translateY(-5px)' : 'scale(1)',
+                        filter: isActive ? 'drop-shadow(0 5px 15px rgba(0,0,0,0.3))' : 'none'
+                      }}>
+                        {program.icon}
+                      </div>
+                      <h3 className="program-title" style={{
+                        fontSize: '1.3rem',
+                        fontWeight: 700,
+                        marginBottom: '1rem',
+                        color: 'white',
+                        transition: 'all 0.3s ease',
+                        transform: isActive ? 'translateY(-3px) scale(1.05)' : 'translateY(0) scale(1)',
+                        textShadow: isActive ? '0 3px 10px rgba(0,0,0,0.3)' : 'none'
+                      }}>
+                        {program.title}
+                      </h3>
+                      <p style={{
+                        fontSize: '1rem',
+                        lineHeight: 1.6,
+                        color: 'rgba(255, 255, 255, 0.9)'
+                      }}>
+                        {program.description}
+                      </p>
+                      {/* Tap hint for mobile */}
+                      <p style={{
+                        fontSize: '0.8rem',
+                        marginTop: '1rem',
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        opacity: isActive ? 1 : 0,
+                        transition: 'opacity 0.3s ease'
+                      }}>
+                        Tap again to learn more
+                      </p>
+                    </div>
                   </div>
-                </div>
                 </ScrollReveal>
-              ))}
+              )})}
             </div>
           </div>
         </section>
