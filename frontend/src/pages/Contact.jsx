@@ -393,7 +393,7 @@ const Contact = () => {
       </style>
 
       {/* Hero Banner */}
-      <section style={{
+      <section className="contact-hero" style={{
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',

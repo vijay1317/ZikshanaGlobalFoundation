@@ -126,6 +126,18 @@ const Home = () => {
   // Donation modal state
   const [showDonateModal, setShowDonateModal] = useState(false);
 
+  // Mobile detection for zoom out animation
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % carouselImages.length);
@@ -162,12 +174,22 @@ const Home = () => {
       <style>
         {`
           @keyframes slowZoomIn {
-            0% {
-              transform: scale(1);
-            }
-            100% {
-              transform: scale(1.1);
-            }
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+          }
+
+          @keyframes heroZoomOut {
+            0% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+          }
+
+          .hero-bg-animate-desktop {
+            animation: slowZoomIn 20s ease-out infinite alternate;
+          }
+
+          .hero-bg-animate-mobile {
+            animation: heroZoomOut 1.5s ease-out forwards !important;
+            will-change: transform;
           }
         `}
       </style>
@@ -355,19 +377,21 @@ const Home = () => {
           overflow: 'hidden'
         }}>
           {/* Animated Background Layer */}
-          <div style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundImage: `url(${heroBannerImage})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            animation: 'slowZoomIn 20s ease-out infinite alternate',
-            zIndex: 0
-          }} />
+          <div
+            key={isMobile ? 'mobile' : 'desktop'}
+            className={isMobile ? 'hero-bg-animate-mobile' : 'hero-bg-animate-desktop'}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundImage: `url(${heroBannerImage})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              zIndex: 0
+            }} />
           {/* Dark overlay for text readability */}
           <div style={{
             position: 'absolute',
@@ -501,7 +525,7 @@ One day all children will build the future they dream of
         </section>
 
         {/* WHY WE EXIST */}
-        <section style={{
+        <section id="why-we-exist" style={{
           padding: '100px 0',
           background: 'linear-gradient(135deg, #4c1d95 0%, #5b21b6 25%, #c2410c 75%, #9a3412 100%)',
           backgroundSize: '400% 400%',
@@ -550,29 +574,27 @@ One day all children will build the future they dream of
             filter: 'blur(2px)'
           }} />
           <div className="container-custom" style={{ position: 'relative', zIndex: 2 }}>
-            <div style={{
+            <div className="section-grid" style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
               gap: '4rem',
               alignItems: 'center'
             }}>
-              <div>
+              {/* Title */}
+              <div className="section-title">
                 <ScrollReveal direction="right">
                   <h2 style={{
-                    fontSize: 'clamp(3rem, 3vw, 2.5rem)',
+                    fontSize: 'clamp(3rem, 3vw, 9.5rem)',
                     fontFamily: 'Merriweather, serif',
                     fontWeight: 700,
                     marginBottom: '2rem',
-                    color: 'white',
                     textTransform: 'uppercase',
                     letterSpacing: '2px',
-                    textShadow: '2px 2px 4px rgba(6, 6, 6, 0.7)'
+                    color: 'white',
+                    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)'
                   }}>
                     Why We Exist
                   </h2>
-                </ScrollReveal>
-
-                <ScrollReveal direction="right" delay={0.2}>
                   <p style={{
                     fontSize: '1.6rem',
                     lineHeight: 1.4,
@@ -585,14 +607,14 @@ One day all children will build the future they dream of
                     Children need skills that prepare them to thrive, not just survive."
                   </p>
                 </ScrollReveal>
-
-                <ScrollReveal direction="right" delay={0.4}>
+                 <ScrollReveal direction="right" delay={0.4}>
                   <p style={{
-                    fontSize: '1.1rem',
-                    lineHeight: 1.6,
-                    color: 'rgba(255, 255, 255, 0.95)',
+                    fontSize: '1.6rem',
+                    lineHeight: 1.4,
+                    color: 'white',
+                    marginBottom: '2rem',
                     textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)',
-                    fontWeight: 400
+                    fontWeight: 500
                   }}>
                     We bridge the gap between classroom learning and real-world readiness through
                     hands-on experiences in technology, leadership, and global citizenship.
@@ -600,23 +622,27 @@ One day all children will build the future they dream of
                 </ScrollReveal>
               </div>
 
-              <ScrollReveal direction="left" delay={0.2}>
-                <div style={{
-                  backgroundImage: `url(${carouselImages[currentImageIndex]})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  height: '400px',
-                  borderRadius: '15px',
-                  boxShadow: '0 15px 40px rgba(0,0,0,0.1)',
-                  transition: 'background-image 0.5s ease-in-out'
-                }} />
-              </ScrollReveal>
+              {/* Image */}
+              <div className="section-image-wrapper">
+                <ScrollReveal direction="left" delay={0.2}>
+                  <div className="section-image" style={{
+                    backgroundImage: `url(${carouselImages[currentImageIndex]})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    height: '400px',
+                    borderRadius: '15px',
+                    boxShadow: '0 15px 40px rgba(0,0,0,0.1)',
+                    transition: 'background-image 0.5s ease-in-out'
+                  }} />
+                </ScrollReveal>
+              </div>
+              
             </div>
           </div>
         </section>
 
         {/* OUR NORTH STAR */}
-        <section style={{
+        <section id="our-north-star" style={{
           padding: '100px 0',
           background: 'linear-gradient(135deg, #4c1d95 0%, #5b21b6 25%, #c2410c 75%, #9a3412 100%)',
           backgroundSize: '400% 400%',
@@ -665,26 +691,14 @@ One day all children will build the future they dream of
             filter: 'blur(2px)'
           }} />
           <div className="container-custom" style={{ position: 'relative', zIndex: 2 }}>
-            <div style={{
+            <div className="section-grid" style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
               gap: '4rem',
               alignItems: 'center'
             }}>
-              {/* Left side - Image */}
-              <ScrollReveal direction="right" delay={0.2}>
-                <div style={{
-                  backgroundImage: `url("${northStarImage}")`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  height: '500px',
-                  borderRadius: '15px',
-                  boxShadow: '0 15px 40px rgba(0,0,0,0.3)'
-                }} />
-              </ScrollReveal>
-
-              {/* Right side - Content */}
-              <div>
+              {/* Title */}
+              <div className="section-title">
                 <ScrollReveal direction="left">
                   <h2 style={{
                     fontSize: 'clamp(3rem, 3vw, 9.5rem)',
@@ -699,10 +713,9 @@ One day all children will build the future they dream of
                     Our North Star
                   </h2>
                 </ScrollReveal>
-
                 <ScrollReveal direction="left" delay={0.2}>
                   <h3 style={{
-                    fontSize: 'clamp(2rem, 3.5vw, 3rem)',
+                    fontSize: 'clamp(1rem, 3vw, 2rem)',
                     fontFamily: 'Merriweather, serif',
                     fontWeight: 700,
                     lineHeight: 1.3,
@@ -710,12 +723,11 @@ One day all children will build the future they dream of
                     color: 'white',
                     textShadow: '1px 1px 3px rgba(0, 0, 0, 0.6)'
                   }}>
-                    "One day all children will design the future instead of just surviving it."
+                    "One day all children will design the future instead of just surviving it"
                   </h3>
                 </ScrollReveal>
-
                 <ScrollReveal direction="left" delay={0.4}>
-                  <p style={{
+                  <h4 style={{
                     fontSize: '1.2rem',
                     lineHeight: 1.7,
                     color: 'rgba(255, 255, 255, 0.95)',
@@ -723,9 +735,24 @@ One day all children will build the future they dream of
                   }}>
                     This is our vision. This is what drives us every single day.
                     Join us in making it a reality.
-                  </p>
+                  </h4>
                 </ScrollReveal>
               </div>
+
+              {/* Image */}
+              <div className="section-image-wrapper">
+                <ScrollReveal direction="right" delay={0.2}>
+                  <div className="section-image" style={{
+                    backgroundImage: `url("${northStarImage}")`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    height: '500px',
+                    borderRadius: '15px',
+                    boxShadow: '0 15px 40px rgba(0,0,0,0.3)'
+                  }} />
+                </ScrollReveal>
+              </div>
+
             </div>
           </div>
         </section>
@@ -751,17 +778,13 @@ One day all children will build the future they dream of
               </h2>
             </ScrollReveal>
 
-            <div style={{
+            <div className="cards-grid" style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(3, 1fr)',
               gridTemplateRows: 'repeat(2, 1fr)',
               gap: '2rem',
               maxWidth: '1200px',
-              margin: '0 auto',
-              '@media (max-width: 768px)': {
-                gridTemplateColumns: '1fr',
-                gridTemplateRows: 'repeat(6, 1fr)'
-              }
+              margin: '0 auto'
             }}>
               {[
                 {
@@ -951,7 +974,7 @@ One day all children will build the future they dream of
               </h2>
             </ScrollReveal>
 
-            <div style={{
+            <div className="stats-grid" style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
               gap: '3rem',
@@ -959,7 +982,7 @@ One day all children will build the future they dream of
             }}>
               <ScrollReveal delay={0.1}>
                 <div>
-                  <div style={{
+                  <div className="stat-number" style={{
                     fontSize: '4rem',
                     fontWeight: 700,
                     color: '#c2410c',

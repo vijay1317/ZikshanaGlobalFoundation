@@ -1,133 +1,100 @@
-import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Heart } from 'lucide-react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import zikshanaLogo from '/src/assets/logo-1.png'
+
+const navigation = [
+  { name: 'About Us', path: '/' },
+  { name: 'Programs', path: '/programs' },
+  { name: 'Fellowship', path: '/fellowship' },
+  { name: 'Stories', path: '/stories' },
+  { name: 'Contact', path: '/contact' }
+]
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ')
+}
 
 const Header = () => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
+  const navigate = useNavigate()
   const location = useLocation()
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  useEffect(() => {
-    setIsOpen(false)
-  }, [location])
-
-  const navigation = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '/' },
-    { name: 'Programs', href: '/programs' },
-    { name: 'Stories', href: '/stories' },
-    { name: 'Get Involved', href: '/get-involved' },
-    { name: 'Blog', href: '/blog' },
-    { name: 'Contact', href: '/contact' },
-  ]
-
   return (
-    <motion.header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-lg'
-          : 'bg-transparent'
-      }`}
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-    >
-      <nav className="container-custom">
-        <div className="flex items-center justify-between h-16 md:h-20">
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
-              <Heart className="w-6 h-6 text-white" />
-            </div>
-            <span className={`text-xl font-display font-bold ${
-              isScrolled ? 'text-neutral-800' : 'text-white'
-            }`}>
-              Zikshana Global Foundation
-            </span>
-          </Link>
-
-          <div className="hidden md:flex items-center space-x-8">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={`font-medium transition-colors duration-200 ${
-                  location.pathname === item.href
-                    ? isScrolled
-                      ? 'text-primary-600'
-                      : 'text-secondary-400'
-                    : isScrolled
-                    ? 'text-neutral-600 hover:text-primary-600'
-                    : 'text-white/90 hover:text-white'
-                }`}
-              >
-                {item.name}
-              </Link>
-            ))}
-            <motion.button
-              className="btn-secondary"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Donate Now
-            </motion.button>
+    <Disclosure as="nav" className="fixed w-full z-50 top-0 left-0 right-0 bg-white shadow-sm">
+      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+        <div className="relative flex h-16 items-center justify-between">
+          <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+            {/* Mobile menu button*/}
+            <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-2 focus:-outline-offset-1 focus:outline-[var(--color-primary)]">
+              <span className="absolute -inset-0.5" />
+              <span className="sr-only">Open main menu</span>
+              <Bars3Icon aria-hidden="true" className="block size-6 group-data-[open]:hidden" />
+              <XMarkIcon aria-hidden="true" className="hidden size-6 group-data-[open]:block" />
+            </DisclosureButton>
           </div>
-
-          <button
-            className={`md:hidden p-2 rounded-lg transition-colors ${
-              isScrolled
-                ? 'text-neutral-600 hover:bg-neutral-100'
-                : 'text-white hover:bg-white/10'
-            }`}
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden bg-white border-t border-neutral-200"
-            >
-              <div className="py-4 space-y-2">
+          <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+            <div className="flex shrink-0 items-center">
+              <Link to="/">
+                <img
+                  alt="Zikshana Global Foundation"
+                  src={zikshanaLogo}
+                  className="h-10 w-auto"
+                />
+              </Link>
+            </div>
+            <div className="hidden sm:ml-6 sm:block">
+              <div className="flex space-x-4">
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
-                    to={item.href}
-                    className={`block px-4 py-2 text-base font-medium transition-colors ${
-                      location.pathname === item.href
-                        ? 'text-primary-600 bg-primary-50'
-                        : 'text-neutral-600 hover:text-primary-600 hover:bg-neutral-50'
-                    }`}
+                    to={item.path}
+                    aria-current={location.pathname === item.path ? 'page' : undefined}
+                    className={classNames(
+                      location.pathname === item.path
+                        ? 'bg-[var(--color-primary)] text-white'
+                        : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900',
+                      'rounded-md px-3 py-2 text-sm font-medium',
+                    )}
                   >
                     {item.name}
                   </Link>
                 ))}
-                <div className="px-4 pt-2">
-                  <button className="btn-secondary w-full">
-                    Donate Now
-                  </button>
-                </div>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
-    </motion.header>
+            </div>
+          </div>
+          <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            {/* Donate Button */}
+            <button
+              onClick={() => navigate('/donate')}
+              className="bg-[var(--color-primary)] text-white font-semibold py-2 px-6 rounded-full hover:bg-[var(--color-primary-dark)] transition-all duration-300 hover:shadow-lg"
+            >
+              DONATE NOW
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <DisclosurePanel className="sm:hidden">
+        <div className="space-y-1 px-2 pt-2 pb-3">
+          {navigation.map((item) => (
+            <DisclosureButton
+              key={item.name}
+              as={Link}
+              to={item.path}
+              aria-current={location.pathname === item.path ? 'page' : undefined}
+              className={classNames(
+                location.pathname === item.path
+                  ? 'bg-[var(--color-primary)] text-white'
+                  : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900',
+                'block rounded-md px-3 py-2 text-base font-medium',
+              )}
+            >
+              {item.name}
+            </DisclosureButton>
+          ))}
+        </div>
+      </DisclosurePanel>
+    </Disclosure>
   )
 }
 

@@ -108,156 +108,56 @@
 
 /* ===== Header Component Mobile Fixes ===== */
 @media (max-width: 768px) {
-  /* Fixed Header - Proper positioning */
-  header {
+  /* Universal reset - Remove ALL default spacing on mobile */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  /* Remove default body margins on mobile */
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 100vh !important;
+  }
+
+  /* Remove default html margins on mobile */
+  html {
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 1vh !important;
+  }
+
+  /* Header - Fixed to absolute top with ZERO gaps */
+  header, nav {
+    background: white !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
     right: 0 !important;
-    z-index: 1000 !important;
-  }
-
-  /* Header background - Better visibility */
-  header.fixed {
-    background: rgba(255, 255, 255, 0.98) !important;
-    backdrop-filter: blur(10px) !important;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
-  }
-
-  /* Header container - Proper spacing */
-  header nav {
-    padding: 0 1rem !important;
-  }
-
-  /* Header inner flex container */
-  header nav > div {
-    height: 64px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-  }
-
-  /* Logo - Better mobile size */
-  header nav a[href="/"] {
-    display: flex !important;
-    align-items: center !important;
-    gap: 0.5rem !important;
-  }
-
-  /* Logo icon */
-  header nav a[href="/"] > div {
-    width: 36px !important;
-    height: 36px !important;
-    flex-shrink: 0 !important;
-  }
-
-  /* Logo text - Hide on very small screens */
-  header nav a[href="/"] > span {
-    font-size: 0.875rem !important;
-    max-width: 150px !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    white-space: nowrap !important;
-  }
-
-  /* Desktop nav - Hide on mobile */
-  header nav > div > div {
-    display: none !important;
-  }
-
-  /* Mobile menu button - Show on mobile */
-  header nav > div > button {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 44px !important;
-    height: 44px !important;
-    border-radius: 8px !important;
-    background: transparent !important;
-    border: none !important;
-    cursor: pointer !important;
-    transition: all 0.2s !important;
-  }
-
-  /* Mobile menu button hover */
-  header nav > div > button:hover {
-    background: rgba(124, 58, 237, 0.1) !important;
-  }
-
-  /* Mobile menu icon */
-  header nav > div > button svg {
-    width: 24px !important;
-    height: 24px !important;
-    color: #1f2937 !important;
-  }
-
-  /* Mobile navigation dropdown */
-  header nav > div:last-child {
-    position: absolute !important;
-    top: 64px !important;
-    left: 0 !important;
-    right: 0 !important;
-    background: white !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-    border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
-    max-height: calc(100vh - 64px) !important;
-    overflow-y: auto !important;
-  }
-
-  /* Mobile nav links container */
-  header nav > div:last-child > div {
+    margin: 0 !important;
     padding: 0 !important;
+    z-index: 9999 !important;
   }
 
-  /* Mobile nav links */
-  header nav > div:last-child a {
-    display: block !important;
-    padding: 1rem 1.5rem !important;
-    font-size: 1rem !important;
-    font-weight: 500 !important;
-    color: #374151 !important;
-    text-decoration: none !important;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
-    transition: all 0.2s !important;
+  /* Main content - Add top padding to account for fixed navbar */
+  main {
+    padding-top: 80px !important;
+    padding-bottom: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
   }
 
-  /* Active nav link */
-  header nav > div:last-child a.active,
-  header nav > div:last-child a[aria-current="page"] {
-    background: rgba(124, 58, 237, 0.05) !important;
-    color: #7c3aed !important;
-    border-left: 3px solid #7c3aed !important;
-  }
-
-  /* Nav link hover */
-  header nav > div:last-child a:hover {
-    background: rgba(124, 58, 237, 0.05) !important;
-    color: #7c3aed !important;
-  }
-
-  /* Donate button in mobile menu */
-  header nav > div:last-child button {
-    margin: 1rem 1.5rem !important;
-    width: calc(100% - 3rem) !important;
-    padding: 14px 24px !important;
-    font-size: 1rem !important;
-    font-weight: 600 !important;
-    border-radius: 8px !important;
-    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%) !important;
-    color: white !important;
-    border: none !important;
-    cursor: pointer !important;
-    transition: all 0.3s !important;
+  /* Body needs padding for fixed navbar */
+  body {
+    padding-top: 0 !important;
   }
 
   /* Body scroll lock when menu is open */
   body.mobile-menu-open {
     overflow: hidden !important;
-  }
-
-  /* Add top padding to body to account for fixed header */
-  body {
-    padding-top: 64px !important;
   }
 }
 
@@ -274,95 +174,467 @@
   }
 }
 
+/* ===== Mobile Hero Banner Zoom Out Animation ===== */
+@keyframes mobileZoomOut {
+  0% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 /* ===== Home Page Mobile Fixes ===== */
 @media (max-width: 768px) {
-  /* Hero Section - Full height with better spacing */
+  /* ===== HERO SECTION - Mobile Optimized ===== */
   section[style*="minHeight: 100vh"] {
-    min-height: 100vh !important;
-    padding: 60px 0 40px 0 !important;
+    min-height: 85vh !important;
+    padding: 0 !important;
     display: flex !important;
     align-items: center !important;
+    margin-bottom: 0 !important;
+    overflow: hidden !important;
   }
 
   /* Hero container - Better mobile positioning */
   section[style*="minHeight: 100vh"] .container-custom {
-    padding: 0 1.5rem !important;
+    padding: 0 1.25rem !important;
     max-width: 100% !important;
   }
 
   /* Hero Title - Responsive sizing */
   section[style*="minHeight: 100vh"] h1 {
-    font-size: clamp(1.75rem, 6vw, 2.5rem) !important;
-    line-height: 1.3 !important;
-    margin-bottom: 2rem !important;
+    font-size: 1.75rem !important;
+    line-height: 1.35 !important;
+    margin-bottom: 1.5rem !important;
     text-align: left !important;
   }
 
-  /* Donate button in hero - Full width on mobile */
-  section[style*="minHeight: 100vh"] button.btn-donate {
+  /* Donate button in hero - Compact on mobile */
+  button.btn-donate {
+    width: auto !important;
+    padding: 12px 20px !important;
+    font-size: 0.9rem !important;
+    max-width: none !important;
+    letter-spacing: 0.3px !important;
+  }
+
+  /* All sections - Better spacing for mobile */
+  section[style*="padding: 100px 0"],
+  section[style*="padding: 80px 0"],
+  section[style*="padding: 60px 0"] {
+    padding: 50px 0 !important;
+    overflow: visible !important;
+  }
+
+  /* Global container padding */
+  .container-custom {
+    padding: 0 1.25rem !important;
+  }
+
+  /* ===== WHY WE EXIST Section - Mobile Optimized ===== */
+  section#why-we-exist {
+    padding: 50px 0 60px 0 !important;
+    margin-bottom: 0 !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  /* Hide smoke overlay effects */
+  section#why-we-exist > div[style*="position: absolute"],
+  section#why-we-exist > div[style*="radial-gradient"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+  }
+
+  section#why-we-exist .container-custom {
+    padding: 0 1.25rem !important;
+    position: relative !important;
+    z-index: 5 !important;
+  }
+
+  section#why-we-exist .section-grid,
+  section#why-we-exist .container-custom > div[style*="display: grid"],
+  section#why-we-exist .container-custom > div[style*="grid"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  section#why-we-exist .section-image-wrapper,
+  section#why-we-exist .section-grid > div:last-child {
+    order: 1 !important;
+    margin-bottom: 1rem !important;
     width: 100% !important;
-    padding: 16px 24px !important;
+  }
+
+  section#why-we-exist .section-title,
+  section#why-we-exist .section-grid > div:first-child {
+    order: 2 !important;
+    width: 100% !important;
+  }
+
+  section#why-we-exist .section-image,
+  section#why-we-exist div[style*="backgroundImage"],
+  section#why-we-exist div[style*="background-image"] {
+    height: 220px !important;
+    min-height: 220px !important;
+    max-height: 220px !important;
+    border-radius: 12px !important;
+    width: 100% !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  section#why-we-exist h2 {
+    font-size: 1.6rem !important;
+    margin-bottom: 1rem !important;
+    line-height: 1.3 !important;
+    text-align: left !important;
+  }
+
+  section#why-we-exist p {
     font-size: 1rem !important;
-    max-width: 400px !important;
+    line-height: 1.7 !important;
+    margin-bottom: 1rem !important;
+    text-align: left !important;
   }
 
-  /* Education Crisis Section - Better spacing */
-  section[style*="padding: 100px 0"] {
-    padding: 60px 0 !important;
+  /* Ensure ScrollReveal content is visible */
+  section#why-we-exist div[style*="opacity"],
+  section#why-we-exist .section-title > div,
+  section#why-we-exist .section-image-wrapper > div {
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
   }
 
-  /* Stats Grid - Single column on mobile */
-  div[style*="gridTemplateColumns: repeat(auto-fit, minmax(200px"] {
+  /* ===== OUR NORTH STAR Section - Mobile Optimized ===== */
+  section#our-north-star {
+    padding: 50px 0 60px 0 !important;
+    margin-top: 20px !important;
+    margin-bottom: 0 !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  /* Hide smoke overlay effects */
+  section#our-north-star > div[style*="position: absolute"],
+  section#our-north-star > div[style*="radial-gradient"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+  }
+
+  section#our-north-star .container-custom {
+    padding: 0 1.25rem !important;
+    position: relative !important;
+    z-index: 5 !important;
+  }
+
+  section#our-north-star .section-grid,
+  section#our-north-star .container-custom > div[style*="display: grid"],
+  section#our-north-star .container-custom > div[style*="grid"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
     grid-template-columns: 1fr !important;
-    gap: 2rem !important;
   }
 
-  /* Stat Numbers - Slightly smaller */
-  div[style*="gridTemplateColumns: repeat(auto-fit, minmax(200px"] div[style*="fontSize: 3rem"] {
-    font-size: 2.5rem !important;
+  section#our-north-star .section-image-wrapper,
+  section#our-north-star .section-grid > div:last-child {
+    order: 1 !important;
+    margin-bottom: 1rem !important;
+    width: 100% !important;
   }
 
-  /* Why We Exist & North Star Sections - Stack grid */
-  div[style*="gridTemplateColumns: repeat(auto-fit, minmax(400px"] {
-    grid-template-columns: 1fr !important;
-    gap: 2rem !important;
+  section#our-north-star .section-title,
+  section#our-north-star .section-grid > div:first-child {
+    order: 2 !important;
+    width: 100% !important;
   }
 
-  /* Image containers in gradient sections - Better height */
-  div[style*="gridTemplateColumns: repeat(auto-fit, minmax(400px"] div[style*="height: 400px"],
-  div[style*="gridTemplateColumns: repeat(auto-fit, minmax(400px"] div[style*="height: 500px"] {
-    height: 300px !important;
+  section#our-north-star .section-image,
+  section#our-north-star div[style*="backgroundImage"],
+  section#our-north-star div[style*="background-image"] {
+    height: 220px !important;
+    min-height: 220px !important;
+    max-height: 220px !important;
+    border-radius: 12px !important;
+    width: 100% !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  section#our-north-star h2 {
+    font-size: 1.6rem !important;
+    margin-bottom: 1rem !important;
+    line-height: 1.3 !important;
+    text-align: left !important;
+  }
+
+  section#our-north-star h3 {
+    font-size: 1.1rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 0.75rem !important;
+    text-align: left !important;
+  }
+
+  section#our-north-star h4,
+  section#our-north-star p {
+    font-size: 1rem !important;
+    line-height: 1.7 !important;
+    text-align: left !important;
+  }
+
+  /* Ensure ScrollReveal content is visible */
+  section#our-north-star div[style*="opacity"],
+  section#our-north-star .section-title > div,
+  section#our-north-star .section-image-wrapper > div {
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+  }
+
+  /* ===== THE EDUCATION CRISIS Section - Mobile Optimized ===== */
+  section[style*="background: white"] {
+    padding: 50px 0 !important;
+  }
+
+  section[style*="background: white"] .container-custom {
+    padding: 0 1.25rem !important;
+  }
+
+  section[style*="background: white"] h2 {
+    font-size: 1.5rem !important;
     margin-bottom: 2rem !important;
   }
 
+  section[style*="background: white"] div[style*="fontSize: 3rem"] {
+    font-size: 2rem !important;
+  }
+
+  section[style*="background: white"] p {
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Fix overlapping sections - ensure proper stacking */
+  section {
+    position: relative !important;
+    z-index: 1 !important;
+    overflow: visible !important;
+  }
+
+  /* Remove negative margins that cause overlap */
+  section[style*="minHeight"] {
+    margin-bottom: 0 !important;
+  }
+
+  /* ===== WHAT WE DO Section - Mobile Optimized ===== */
+  .cards-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.25rem !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .cards-grid .card {
+    padding: 1.5rem !important;
+    margin-bottom: 0 !important;
+    width: 100% !important;
+  }
+
+  .cards-grid .program-icon {
+    font-size: 2.5rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .cards-grid .program-title {
+    font-size: 1.1rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .cards-grid p {
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+  }
+
+  /* ===== POWER OF OUR MOVEMENT Section - Mobile Optimized ===== */
+  .stats-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .stats-grid > div {
+    width: 100% !important;
+  }
+
+  .stat-number {
+    font-size: 2.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  /* Stats Grid - Single column on mobile (Power of Our Movement) */
+  div[style*="gridTemplateColumns: repeat(auto-fit, minmax(200px"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+    align-items: center !important;
+  }
+
+  /* Stat Numbers - Slightly smaller */
+  div[style*="fontSize: 4rem"] {
+    font-size: 2.5rem !important;
+  }
+
+  /* All grid containers inside sections - force single column */
+  section > div > div[style*="display: grid"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+  }
+
+  /* Section images - Why We Exist & Our North Star - MUST BE VISIBLE */
+  .section-image {
+    height: 220px !important;
+    min-height: 220px !important;
+    max-height: 220px !important;
+    width: 100% !important;
+    margin-bottom: 1.5rem !important;
+    border-radius: 12px !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+  }
+
+  /* Force ScrollReveal wrappers to be visible on mobile */
+  .section-grid > div,
+  .section-grid > div > div {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
+
+  /* Section layout order for mobile: Image (1) → Title (2) → Content (3) */
+  .section-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2rem !important;
+  }
+
+  .section-grid .section-image-wrapper {
+    order: 1 !important;
+    width: 100% !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .section-grid .section-title {
+    order: 2 !important;
+  }
+
+  .section-grid .section-content {
+    order: 3 !important;
+  }
+
+  /* Ensure section images are visible on mobile */
+  .section-image-wrapper,
+  .section-image-wrapper > div,
+  .section-image {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+  }
+
+  .section-image {
+    height: 220px !important;
+    min-height: 220px !important;
+    background-size: cover !important;
+    background-position: center !important;
+    border-radius: 12px !important;
+  }
+
+  /* Image containers in gradient sections - Fixed height, no overlap */
+  div[style*="background-image"][style*="height"],
+  div[style*="backgroundImage"][style*="height"] {
+    height: 220px !important;
+    min-height: 220px !important;
+    max-height: 220px !important;
+    margin-bottom: 1.5rem !important;
+    width: 100% !important;
+    border-radius: 12px !important;
+  }
+
   /* Section headings - Better mobile sizing */
-  h2[style*="fontSize: clamp"] {
-    font-size: clamp(1.5rem, 5vw, 2rem) !important;
+  h2[style*="fontSize: clamp"],
+  h2[style*="font-size"] {
+    font-size: 1.5rem !important;
     margin-bottom: 2rem !important;
     padding: 0 1rem !important;
   }
 
   /* Section paragraph text - Better readability */
-  p[style*="fontSize: 1.6rem"] {
-    font-size: 1.2rem !important;
-    line-height: 1.5 !important;
+  p[style*="fontSize: 1.6rem"],
+  p[style*="font-size: 1.6rem"] {
+    font-size: 1.15rem !important;
+    line-height: 1.7 !important;
     padding: 0 0.5rem !important;
+    margin-bottom: 1.5rem !important;
   }
 
   p[style*="fontSize: 1.3rem"] {
     font-size: 1.1rem !important;
+    line-height: 1.6 !important;
+    margin-bottom: 1.25rem !important;
   }
 
-  /* What We Do - 3x2 grid becomes single column */
-  div[style*="gridTemplateColumns: repeat(3, 1fr)"] {
-    grid-template-columns: 1fr !important;
-    grid-template-rows: auto !important;
-    gap: 1.5rem !important;
+  /* Improve text spacing in sections */
+  .section-title p,
+  .section-content p {
+    margin-bottom: 1.5rem !important;
+    line-height: 1.7 !important;
   }
 
-  /* Program cards - Better mobile padding */
-  div[style*="gridTemplateColumns: repeat(3, 1fr)"] .card {
+  /* What We Do - Force single column for all cards */
+  .container-custom > div[style*="grid"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2rem !important;
+  }
+
+  /* Program cards - Full width single column with more padding */
+  .card {
+    width: 100% !important;
     padding: 2rem 1.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  /* Hide or reduce smoke blend effects to prevent overlap */
+  section > div[style*="position: absolute"][style*="height: 200px"] {
+    height: 30px !important;
+    opacity: 0.3 !important;
+  }
+
+  /* Hide smoke effects in gradient sections completely on mobile */
+  section[style*="linear-gradient"] > div[style*="position: absolute"][style*="height"] {
+    display: none !important;
   }
 
   /* Program icon - Smaller on mobile */
@@ -468,14 +740,28 @@
 
 /* ===== Extra Small Devices - Home Page ===== */
 @media (max-width: 480px) {
-  /* Hero section - Compact on very small screens */
-  section[style*="minHeight: 100vh"] {
-    min-height: 90vh !important;
-    padding: 40px 0 30px 0 !important;
+  /* Hero section - No zoom, prevent overlap on small screens */
+  section[style*="minHeight: 100vh"],
+  section[style*="minHeight: 90vh"],
+  section[style*="minHeight: 80vh"],
+  .hero-section {
+    min-height: auto !important;
+    padding: 70px 0 50px 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Exclude hero-bg-animate classes from animation:none */
+  [class*="hero"]:not(.hero-bg-animate-mobile):not(.hero-bg-animate-desktop),
+  [class*="Hero"]:not(.hero-bg-animate-mobile):not(.hero-bg-animate-desktop) {
+    transform: none !important;
+    animation: none !important;
   }
 
   /* Hero title - Even smaller */
-  section[style*="minHeight: 100vh"] h1 {
+  section[style*="minHeight: 100vh"] h1,
+  .hero-section h1,
+  [class*="hero"] h1,
+  [class*="Hero"] h1 {
     font-size: clamp(1.5rem, 5vw, 2rem) !important;
     margin-bottom: 1.5rem !important;
   }
@@ -503,7 +789,27 @@
 
   /* Image heights - Smaller on very small screens */
   div[style*="height: 300px"] {
-    height: 250px !important;
+    height: 200px !important;
+  }
+
+  /* Why We Exist & North Star - Single column with proper spacing */
+  div[style*="gridTemplateColumns: repeat(auto-fit, minmax(400px"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+  }
+
+  /* Power of Our Movement stats - Single column */
+  div[style*="gridTemplateColumns: repeat(auto-fit, minmax(200px"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+    text-align: center !important;
+  }
+
+  /* Stat numbers smaller on extra small */
+  div[style*="fontSize: 4rem"] {
+    font-size: 2rem !important;
   }
 }
 
@@ -525,9 +831,9 @@
 
 /* ===== General Mobile Improvements ===== */
 @media (max-width: 768px) {
-  /* Container Custom - Reduce padding */
+  /* Container Custom - Better side padding */
   .container-custom {
-    padding: 0 1rem !important;
+    padding: 0 1.25rem !important;
   }
 
   /* Section Padding - Reduce */
@@ -546,6 +852,17 @@
   img {
     max-width: 100% !important;
     height: auto !important;
+  }
+
+  /* Navbar logo - Fixed size on mobile, blend with navbar */
+  img.navbar-logo {
+    height: 60px !important;
+    width: auto !important;
+    max-width: 120px !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
   }
 
   /* Touch targets - Minimum 44px */
@@ -817,11 +1134,35 @@ span[style*="borderRadius: 9999px"][style*="padding: 0.25rem"] {
   }
 }
 
-/* ===== Mobile Animations - Performance ===== */
+/* ===== Hero Zoom Out Animation Keyframes (Global) ===== */
+@keyframes heroZoomOut {
+  0% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ===== Mobile Animations - Disable Banner Zoom Oscillation ===== */
 @media (max-width: 768px) {
-  /* Reduce motion for better performance on mobile */
-  * {
-    animation-duration: 0.3s !important;
+  /* Override the zoom keyframes to prevent oscillation - make them static */
+  @keyframes slowZoomIn {
+    0%, 100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes bannerZoom {
+    0%, 100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes contactBannerZoom {
+    0%, 100% {
+      transform: scale(1);
+    }
   }
 
   /* Disable parallax on mobile (performance) */
@@ -829,56 +1170,41 @@ span[style*="borderRadius: 9999px"][style*="padding: 0.25rem"] {
   .parallax {
     transform: none !important;
   }
-
-  /* Simpler transitions on mobile */
-  * {
-    transition-duration: 0.2s !important;
-  }
 }
 
-/* ===== Mobile Dark Mode Support ===== */
+/* ===== Mobile Dark Mode Support - DISABLED ===== */
+/* Dark mode is disabled to maintain consistent white navbar */
 @media (max-width: 768px) and (prefers-color-scheme: dark) {
-  /* Respect system dark mode preference */
-  body {
-    background-color: #1a1a1a !important;
-    color: #e0e0e0 !important;
-  }
-
-  /* Dark mode cards */
-  .card {
-    background-color: #2a2a2a !important;
-    border-color: #3a3a3a !important;
-  }
-
-  /* Dark mode header */
+  /* Keep header white even in dark mode */
   header {
-    background: rgba(26, 26, 26, 0.98) !important;
+    background: white !important;
+    color: var(--color-text-primary) !important;
   }
 
-  /* Dark mode inputs */
-  input,
-  select,
-  textarea {
-    background-color: #2a2a2a !important;
-    color: #e0e0e0 !important;
-    border-color: #3a3a3a !important;
+  /* Keep body light for consistency */
+  body {
+    background-color: white !important;
+    color: var(--color-text-primary) !important;
   }
 }
 
-/* ===== Mobile Safe Areas (iPhone Notch Support) ===== */
+/* ===== Mobile Safe Areas (iPhone Notch Support) - DISABLED ===== */
+/* Removed to eliminate top gap - navbar sticks to absolute top */
 @media (max-width: 768px) {
-  /* iOS Safe Area - Top */
+  /* Remove safe area padding from header for edge-to-edge navbar */
   header {
-    padding-top: env(safe-area-inset-top) !important;
+    padding-top: 0 !important;
   }
 
-  /* iOS Safe Area - Bottom */
+  /* Keep bottom safe area for footer */
   footer {
     padding-bottom: env(safe-area-inset-bottom) !important;
   }
 
-  /* iOS Safe Area - Sides */
+  /* Keep side safe areas only - no top/bottom padding */
   body {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
     padding-left: env(safe-area-inset-left) !important;
     padding-right: env(safe-area-inset-right) !important;
   }
@@ -895,6 +1221,361 @@ span[style*="borderRadius: 9999px"][style*="padding: 0.25rem"] {
   main,
   article {
     overscroll-behavior-y: auto !important;
+  }
+}
+
+/* ===== Enhanced Mobile Grid Fixes ===== */
+@media (max-width: 768px) {
+  /* Fix all grid layouts with minmax patterns */
+  [style*="gridTemplateColumns"][style*="minmax(200px"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [style*="gridTemplateColumns"][style*="minmax(250px"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [style*="gridTemplateColumns"][style*="minmax(300px"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [style*="gridTemplateColumns"][style*="minmax(350px"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [style*="gridTemplateColumns"][style*="minmax(400px"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [style*="gridTemplateColumns"][style*="repeat(2, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [style*="gridTemplateColumns"][style*="repeat(3, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  [style*="gridTemplateColumns"][style*="repeat(4, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Reduce grid gaps on mobile */
+  [style*="gap: 3rem"],
+  [style*="gap: 48px"] {
+    gap: 1.5rem !important;
+  }
+
+  [style*="gap: 2rem"],
+  [style*="gap: 32px"] {
+    gap: 1rem !important;
+  }
+}
+
+/* ===== Mobile Typography Fixes ===== */
+@media (max-width: 768px) {
+  /* Fix large heading sizes */
+  [style*="fontSize: 3.8rem"],
+  [style*="fontSize: 3.5rem"],
+  [style*="fontSize: 3rem"] {
+    font-size: clamp(1.75rem, 5vw, 2.25rem) !important;
+  }
+
+  [style*="fontSize: 2.5rem"],
+  [style*="fontSize: 2rem"] {
+    font-size: clamp(1.5rem, 4vw, 1.875rem) !important;
+  }
+
+  [style*="fontSize: 1.6rem"],
+  [style*="fontSize: 1.5rem"] {
+    font-size: clamp(1.125rem, 3vw, 1.25rem) !important;
+  }
+
+  [style*="fontSize: 1.3rem"],
+  [style*="fontSize: 1.2rem"] {
+    font-size: clamp(1rem, 2.5vw, 1.125rem) !important;
+  }
+}
+
+/* ===== Mobile Padding/Margin Reductions ===== */
+@media (max-width: 768px) {
+  /* Reduce large paddings */
+  [style*="padding: 100px 0"],
+  [style*="padding: 80px 0"] {
+    padding: 60px 0 !important;
+  }
+
+  [style*="padding: 60px 0"] {
+    padding: 40px 0 !important;
+  }
+
+  [style*="padding: 3rem"],
+  [style*="padding: 48px"] {
+    padding: 1.5rem !important;
+  }
+
+  [style*="padding: 2.5rem"],
+  [style*="padding: 40px"] {
+    padding: 1.25rem !important;
+  }
+
+  [style*="padding: 2rem"],
+  [style*="padding: 32px"] {
+    padding: 1rem !important;
+  }
+
+  /* Reduce large margins */
+  [style*="marginBottom: 3rem"],
+  [style*="marginBottom: 48px"] {
+    margin-bottom: 2rem !important;
+  }
+
+  [style*="marginBottom: 2rem"],
+  [style*="marginBottom: 32px"] {
+    margin-bottom: 1.5rem !important;
+  }
+}
+
+/* ===== Mobile Image Height Fixes ===== */
+@media (max-width: 768px) {
+  /* Reduce tall image containers */
+  [style*="height: 500px"],
+  [style*="height: 450px"],
+  [style*="height: 400px"] {
+    height: 250px !important;
+  }
+
+  [style*="height: 350px"],
+  [style*="height: 300px"] {
+    height: 200px !important;
+  }
+
+  [style*="height: 250px"] {
+    height: 180px !important;
+  }
+
+  /* Fix min-height on hero sections */
+  [style*="minHeight: 100vh"] {
+    min-height: auto !important;
+    padding-top: 80px !important;
+    padding-bottom: 60px !important;
+  }
+}
+
+/* ===== Mobile Max-Width Fixes ===== */
+@media (max-width: 768px) {
+  /* Ensure containers don't have restrictive max-widths on mobile */
+  [style*="maxWidth: 900px"],
+  [style*="maxWidth: 800px"],
+  [style*="maxWidth: 700px"],
+  [style*="maxWidth: 600px"] {
+    max-width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+/* ===== Mobile Button Fixes ===== */
+@media (max-width: 768px) {
+  /* Ensure all buttons have proper touch targets */
+  button,
+  [role="button"],
+  a[style*="padding"] {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+
+  /* Make CTA buttons more prominent on mobile */
+  .btn-donate,
+  [class*="btn-"] {
+    width: 100% !important;
+    max-width: 400px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
+/* ===== Mobile Flexbox Fixes ===== */
+@media (max-width: 768px) {
+  /* Stack flex containers on mobile */
+  [style*="display: flex"][style*="gap: 1.5rem"],
+  [style*="display: flex"][style*="gap: 2rem"] {
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+
+  /* Prevent flex items from shrinking too much */
+  [style*="display: flex"] > * {
+    flex-shrink: 0 !important;
+  }
+}
+
+/* ===== Mobile Animation Performance ===== */
+@media (max-width: 768px) {
+  /* ALLOW hero zoom out animation - use class-based targeting */
+  /* Higher specificity to override [class*="hero"] { animation: none } */
+  div.hero-bg-animate-mobile {
+    animation: heroZoomOut 1.5s ease-out forwards !important;
+  }
+
+  /* Slow down floating animations */
+  [style*="animation"][class*="float"],
+  [style*="animation"][class*="Float"] {
+    animation-duration: 3s !important;
+    animation-timing-function: ease-in-out !important;
+  }
+
+  /* Smoother transitions - match desktop feel */
+  [style*="transition"] {
+    transition-duration: 0.5s !important;
+    transition-timing-function: ease-in-out !important;
+  }
+}
+
+/* ===== Mobile Form Enhancements ===== */
+@media (max-width: 768px) {
+  /* Better form inputs on mobile */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="password"],
+  select,
+  textarea {
+    font-size: 16px !important; /* Prevents iOS zoom */
+    padding: 12px 16px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    border-radius: 8px !important;
+  }
+
+  /* Stack form labels and inputs */
+  form > div,
+  form > label {
+    width: 100% !important;
+    margin-bottom: 1rem !important;
+  }
+}
+
+/* ===== Mobile Modal/Dialog Fixes ===== */
+@media (max-width: 768px) {
+  /* Make modals full-width on mobile with padding */
+  [style*="position: fixed"][style*="zIndex: 9999"] > div,
+  [style*="position: fixed"][style*="zIndex: 2000"] > div,
+  [role="dialog"] {
+    max-width: calc(100vw - 2rem) !important;
+    margin: 1rem !important;
+  }
+
+  /* Reduce modal padding */
+  [style*="position: fixed"] [style*="padding: 2.5rem"],
+  [style*="position: fixed"] [style*="padding: 2rem"] {
+    padding: 1.25rem !important;
+  }
+}
+
+/* ===== Mobile Card Fixes ===== */
+@media (max-width: 768px) {
+  /* Reduce card padding */
+  .card,
+  [class*="card"] {
+    padding: 1.5rem 1rem !important;
+  }
+
+  /* Stack card content */
+  .card > div {
+    width: 100% !important;
+  }
+
+  /* Better card spacing in grids */
+  .card + .card {
+    margin-top: 1rem !important;
+  }
+}
+
+/* ===== Mobile Text Alignment ===== */
+@media (max-width: 768px) {
+  /* Left-align text for better mobile readability */
+  [style*="textAlign: center"] h1,
+  [style*="textAlign: center"] h2,
+  [style*="textAlign: center"] h3 {
+    text-align: left !important;
+  }
+
+  /* Keep body text left-aligned */
+  [style*="textAlign: center"] p {
+    text-align: left !important;
+  }
+}
+
+/* ===== Extra Small Mobile Devices (320px - 480px) ===== */
+@media (max-width: 480px) {
+  /* Further reduce typography for very small screens */
+  [style*="fontSize: 3.8rem"],
+  [style*="fontSize: 3.5rem"],
+  [style*="fontSize: 3rem"],
+  [style*="fontSize: 2.5rem"],
+  [style*="fontSize: 2rem"] {
+    font-size: clamp(1.5rem, 6vw, 1.875rem) !important;
+    line-height: 1.3 !important;
+  }
+
+  [style*="fontSize: 1.6rem"],
+  [style*="fontSize: 1.5rem"],
+  [style*="fontSize: 1.3rem"],
+  [style*="fontSize: 1.2rem"] {
+    font-size: clamp(1rem, 3vw, 1.125rem) !important;
+  }
+
+  /* Reduce padding even more */
+  [style*="padding: 100px 0"],
+  [style*="padding: 80px 0"],
+  [style*="padding: 60px 0"] {
+    padding: 40px 0 !important;
+  }
+
+  [style*="padding: 3rem"],
+  [style*="padding: 2.5rem"],
+  [style*="padding: 2rem"] {
+    padding: 1rem !important;
+  }
+
+  /* Smaller image heights */
+  [style*="height: 500px"],
+  [style*="height: 450px"],
+  [style*="height: 400px"],
+  [style*="height: 350px"],
+  [style*="height: 300px"],
+  [style*="height: 250px"] {
+    height: 180px !important;
+  }
+
+  /* Reduce gaps further */
+  [style*="gap: 3rem"],
+  [style*="gap: 2rem"],
+  [style*="gap: 1.5rem"] {
+    gap: 0.75rem !important;
+  }
+
+  /* Smaller icon/logo sizes */
+  [style*="width: 60px"][style*="height: 60px"],
+  [style*="width: 50px"][style*="height: 50px"] {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
+/* ===== Large Phones & Small Tablets (481px - 768px) ===== */
+@media (min-width: 481px) and (max-width: 768px) {
+  /* Two-column grids on larger phones */
+  [style*="gridTemplateColumns"][style*="repeat(3, 1fr)"],
+  [style*="gridTemplateColumns"][style*="repeat(4, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Keep some desktop spacing on tablets */
+  [style*="padding: 100px 0"],
+  [style*="padding: 80px 0"] {
+    padding: 70px 0 !important;
   }
 }
 
@@ -925,6 +1606,224 @@ span[style*="borderRadius: 9999px"][style*="padding: 0.25rem"] {
   }
 }
 
+/* ===== Programs Page - Mobile View for Future Curriculum Sections ===== */
+/* COMPLETE MOBILE REDESIGN - Ensures all content is fully visible and readable */
+@media (max-width: 768px) {
+
+  /* ===== MASTER RESET: Override all inline grid styles ===== */
+  section#stem-innovation,
+  section#coding-robotics,
+  section#global-languages,
+  section#public-speaking-leadership,
+  section#yoga-wellbeing,
+  section#entrepreneurship {
+    display: block !important;
+    padding: 60px 20px !important;
+    margin-bottom: 40px !important;
+    min-height: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* ===== HIDE all smoke/blur overlay effects ===== */
+  section#stem-innovation > div[style*="position: absolute"],
+  section#coding-robotics > div[style*="position: absolute"],
+  section#global-languages > div[style*="position: absolute"],
+  section#public-speaking-leadership > div[style*="position: absolute"],
+  section#yoga-wellbeing > div[style*="position: absolute"],
+  section#entrepreneurship > div[style*="position: absolute"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+  }
+
+  /* ===== Container - Full width with padding ===== */
+  section#stem-innovation .container-custom,
+  section#coding-robotics .container-custom,
+  section#global-languages .container-custom,
+  section#public-speaking-leadership .container-custom,
+  section#yoga-wellbeing .container-custom,
+  section#entrepreneurship .container-custom {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 10px !important;
+    margin: 0 !important;
+    height: auto !important;
+  }
+
+  /* ===== FORCE SINGLE COLUMN: Override grid completely ===== */
+  section#stem-innovation .container-custom > div,
+  section#coding-robotics .container-custom > div,
+  section#global-languages .container-custom > div,
+  section#public-speaking-leadership .container-custom > div,
+  section#yoga-wellbeing .container-custom > div,
+  section#entrepreneurship .container-custom > div {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 25px !important;
+    width: 100% !important;
+    height: auto !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ===== ALL CHILD DIVS - Full width and visible ===== */
+  /* Text content divs - order 2 (appear after image) */
+  section#stem-innovation .container-custom > div > div,
+  section#coding-robotics .container-custom > div > div,
+  section#global-languages .container-custom > div > div,
+  section#public-speaking-leadership .container-custom > div > div,
+  section#yoga-wellbeing .container-custom > div > div,
+  section#entrepreneurship .container-custom > div > div {
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    order: 2 !important;
+  }
+
+  /* ===== IMAGE DIVS: Always appear FIRST (order: 1) ===== */
+  section#stem-innovation .container-custom > div > div[style*="backgroundImage"],
+  section#coding-robotics .container-custom > div > div[style*="backgroundImage"],
+  section#global-languages .container-custom > div > div[style*="backgroundImage"],
+  section#public-speaking-leadership .container-custom > div > div[style*="backgroundImage"],
+  section#yoga-wellbeing .container-custom > div > div[style*="backgroundImage"],
+  section#entrepreneurship .container-custom > div > div[style*="backgroundImage"],
+  section#stem-innovation .container-custom > div > div[style*="background-image"],
+  section#coding-robotics .container-custom > div > div[style*="background-image"],
+  section#global-languages .container-custom > div > div[style*="background-image"],
+  section#public-speaking-leadership .container-custom > div > div[style*="background-image"],
+  section#yoga-wellbeing .container-custom > div > div[style*="background-image"],
+  section#entrepreneurship .container-custom > div > div[style*="background-image"] {
+    width: 100% !important;
+    height: 220px !important;
+    min-height: 220px !important;
+    max-height: 220px !important;
+    border-radius: 12px !important;
+    margin-bottom: 20px !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    flex-shrink: 0 !important;
+    background-size: cover !important;
+    background-position: center !important;
+    order: 1 !important;
+  }
+
+  /* ===== HEADINGS - Large and readable ===== */
+  section#stem-innovation h2,
+  section#coding-robotics h2,
+  section#global-languages h2,
+  section#public-speaking-leadership h2,
+  section#yoga-wellbeing h2,
+  section#entrepreneurship h2 {
+    font-size: 1.6rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 20px !important;
+    text-align: left !important;
+    color: white !important;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5) !important;
+    word-wrap: break-word !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  /* ===== PARAGRAPHS - Larger readable text ===== */
+  section#stem-innovation p,
+  section#coding-robotics p,
+  section#global-languages p,
+  section#public-speaking-leadership p,
+  section#yoga-wellbeing p,
+  section#entrepreneurship p {
+    font-size: 1.05rem !important;
+    line-height: 1.8 !important;
+    margin-bottom: 20px !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+    text-align: left !important;
+    word-wrap: break-word !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    overflow: visible !important;
+  }
+
+  /* ===== LISTS - Visible and properly spaced ===== */
+  section#stem-innovation ul,
+  section#coding-robotics ul,
+  section#global-languages ul,
+  section#public-speaking-leadership ul,
+  section#yoga-wellbeing ul,
+  section#entrepreneurship ul {
+    padding-left: 0 !important;
+    margin: 20px 0 !important;
+    list-style: none !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  section#stem-innovation ul li,
+  section#coding-robotics ul li,
+  section#global-languages ul li,
+  section#public-speaking-leadership ul li,
+  section#yoga-wellbeing ul li,
+  section#entrepreneurship ul li {
+    font-size: 1rem !important;
+    line-height: 1.7 !important;
+    margin-bottom: 12px !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+    padding-left: 5px !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  /* ===== Ensure all child elements are visible ===== */
+  section#stem-innovation *,
+  section#coding-robotics *,
+  section#global-languages *,
+  section#public-speaking-leadership *,
+  section#yoga-wellbeing *,
+  section#entrepreneurship * {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* ===== Future-Ready Curriculum Cards Grid - Mobile ===== */
+  section[style*="background: white"] .container-custom > div[style*="grid"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
+  }
+
+  /* ===== Program Cards - Mobile ===== */
+  section[style*="background: white"] .card {
+    padding: 25px !important;
+    margin-bottom: 15px !important;
+    width: 100% !important;
+  }
+
+  section[style*="background: white"] .card .program-icon {
+    font-size: 3rem !important;
+    margin-bottom: 15px !important;
+  }
+
+  section[style*="background: white"] .card .program-title {
+    font-size: 1.25rem !important;
+    margin-bottom: 10px !important;
+  }
+
+  section[style*="background: white"] .card p {
+    font-size: 1rem !important;
+    line-height: 1.6 !important;
+  }
+}
+
 /* ===== Mobile First Aid - Common Issues ===== */
 @media (max-width: 768px) {
   /* Fix sticky footer */
@@ -940,16 +1839,28 @@ span[style*="borderRadius: 9999px"][style*="padding: 0.25rem"] {
 
   main {
     flex: 1 !important;
+    padding-top: 60px !important;
   }
 
   /* Fix z-index stacking issues */
-  header {
-    z-index: 1000 !important;
+  header,
+  nav {
+    z-index: 9999 !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
   }
 
   .modal,
   [role="dialog"] {
-    z-index: 2000 !important;
+    z-index: 10000 !important;
+  }
+
+  /* Ensure sections don't overlap navbar */
+  section {
+    z-index: 1 !important;
   }
 
   .toast,
@@ -972,5 +1883,259 @@ span[style*="borderRadius: 9999px"][style*="padding: 0.25rem"] {
   .shadow,
   [class*="shadow"] {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  }
+}
+
+/* ===== CONTACT PAGE - Mobile Optimized ===== */
+@media (max-width: 768px) {
+  /* Contact Hero Section - Full visibility */
+  .contact-hero,
+  section.contact-hero {
+    min-height: auto !important;
+    height: auto !important;
+    padding: 100px 1rem 60px 1rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Hero content container */
+  .contact-hero > div:last-child {
+    padding: 0 0.5rem !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .contact-hero h1 {
+    font-size: 1.4rem !important;
+    line-height: 1.35 !important;
+    margin-bottom: 1rem !important;
+    padding: 0 !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* Hero divider line */
+  .contact-hero div[style*="width: 150px"] {
+    width: 80px !important;
+    height: 4px !important;
+    margin-bottom: 1.25rem !important;
+  }
+
+  .contact-hero p {
+    font-size: 0.9rem !important;
+    line-height: 1.6 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* Contact Grid - Single Column */
+  .contact-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2rem !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Main Contact Section */
+  section[style*="padding: 100px 0"][style*="linear-gradient"] {
+    padding: 50px 0 !important;
+  }
+
+  section[style*="padding: 100px 0"][style*="linear-gradient"] .container-custom {
+    padding: 0 1rem !important;
+  }
+
+  /* Contact Form Container */
+  .contact-grid > div:first-child > div,
+  div[style*="background: white"][style*="borderRadius: 20px"] {
+    padding: 1.5rem !important;
+    border-radius: 15px !important;
+  }
+
+  /* Form heading */
+  .contact-grid h2 {
+    font-size: 1.4rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .contact-grid h2 span {
+    font-size: 1.5rem !important;
+  }
+
+  /* Form inputs */
+  .form-input,
+  .contact-grid input,
+  .contact-grid select,
+  .contact-grid textarea {
+    padding: 0.7rem !important;
+    font-size: 16px !important; /* Prevents iOS zoom */
+    border-radius: 8px !important;
+  }
+
+  .contact-grid textarea {
+    min-height: 100px !important;
+  }
+
+  /* Form labels */
+  .contact-grid label {
+    font-size: 0.9rem !important;
+    margin-bottom: 0.3rem !important;
+  }
+
+  /* Form spacing */
+  .contact-grid div[style*="marginBottom: 1rem"] {
+    margin-bottom: 0.75rem !important;
+  }
+
+  /* Submit button */
+  .submit-btn,
+  .contact-grid button[type="submit"] {
+    padding: 0.85rem !important;
+    font-size: 0.95rem !important;
+    border-radius: 10px !important;
+  }
+
+  /* Contact Information Section */
+  .contact-grid > div:last-child h2 {
+    font-size: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  /* Contact Cards */
+  .contact-card {
+    padding: 1.25rem !important;
+    border-radius: 12px !important;
+    margin-bottom: 1.25rem !important;
+  }
+
+  .contact-card h3 {
+    font-size: 1.15rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .contact-card h3 span {
+    font-size: 1.4rem !important;
+  }
+
+  .contact-card p {
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+  }
+
+  .contact-card a {
+    font-size: 0.95rem !important;
+  }
+
+  /* WhatsApp button in contact card */
+  .contact-card div[style*="background: linear-gradient"][style*="#25D366"] {
+    padding: 1rem !important;
+    border-radius: 10px !important;
+  }
+
+  .contact-card div[style*="background: linear-gradient"][style*="#25D366"] button {
+    padding: 0.85rem !important;
+    font-size: 1rem !important;
+  }
+
+  /* Social Media Section */
+  section[style*="padding: 80px 0"][style*="textAlign: center"] {
+    padding: 50px 0 !important;
+  }
+
+  section[style*="padding: 80px 0"][style*="textAlign: center"] h2 {
+    font-size: 1.4rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  section[style*="padding: 80px 0"][style*="textAlign: center"] p {
+    font-size: 0.95rem !important;
+    margin-bottom: 2rem !important;
+    padding: 0 1rem !important;
+  }
+
+  /* Social Icons Container */
+  section[style*="padding: 80px 0"] div[style*="display: flex"][style*="justifyContent: center"] {
+    gap: 0.75rem !important;
+    padding: 0 0.5rem !important;
+  }
+
+  /* Social Icon Cards */
+  .social-icon {
+    padding: 1rem !important;
+    min-width: 100px !important;
+    border-radius: 12px !important;
+  }
+
+  .social-icon div[style*="width: 60px"] {
+    width: 45px !important;
+    height: 45px !important;
+  }
+
+  .social-icon span {
+    font-size: 0.85rem !important;
+  }
+
+  /* Support/Donation CTA Section */
+  section[style*="padding: 100px 0"][style*="#9d4a06"] {
+    padding: 60px 0 !important;
+  }
+
+  section[style*="padding: 100px 0"][style*="#9d4a06"] h2 {
+    font-size: 1.5rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  section[style*="padding: 100px 0"][style*="#9d4a06"] p {
+    font-size: 1rem !important;
+    margin-bottom: 2rem !important;
+    padding: 0 1rem !important;
+    line-height: 1.6 !important;
+  }
+
+  /* CTA Buttons */
+  section[style*="padding: 100px 0"][style*="#9d4a06"] div[style*="display: flex"][style*="justifyContent: center"] {
+    flex-direction: column !important;
+    gap: 1rem !important;
+    padding: 0 1.5rem !important;
+  }
+
+  section[style*="padding: 100px 0"][style*="#9d4a06"] a {
+    width: 100% !important;
+    padding: 1rem 2rem !important;
+    font-size: 1rem !important;
+    text-align: center !important;
+  }
+
+  /* Google Map Section */
+  section[style*="height: 450px"] {
+    height: 300px !important;
+  }
+
+  /* WhatsApp Floating Button */
+  .whatsapp-float {
+    bottom: 15px !important;
+    right: 15px !important;
+  }
+
+  .whatsapp-button {
+    width: 55px !important;
+    height: 55px !important;
+  }
+
+  .whatsapp-icon {
+    font-size: 1.8rem !important;
+  }
+
+  .whatsapp-tooltip {
+    display: none !important;
+  }
+
+  /* Ensure ScrollReveal content is visible on Contact page */
+  .contact-grid div[style*="opacity"],
+  .contact-grid > div > div {
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
   }
 }

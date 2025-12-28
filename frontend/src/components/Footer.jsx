@@ -38,8 +38,8 @@ const Footer = () => {
   return (
     <footer className="bg-neutral-900 text-white">
       <div className="container-custom">
-        <div className="py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="py-12 md:py-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -144,18 +144,20 @@ const Footer = () => {
 
               <div className="mt-8">
                 <h4 className="font-semibold mb-4">Newsletter</h4>
-                <div className="flex">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <input
                     type="email"
                     placeholder="Enter your email"
-                    className="flex-1 px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-l-lg focus:outline-none focus:border-primary-500 text-white"
+                    className="flex-1 px-4 py-3 bg-neutral-800 border border-neutral-700 rounded-lg sm:rounded-l-lg sm:rounded-r-none focus:outline-none focus:border-primary-500 text-white text-base min-h-[48px]"
                   />
                   <motion.button
-                    className="px-4 py-2 bg-primary-600 hover:bg-primary-700 rounded-r-lg transition-colors duration-200"
+                    className="px-6 py-3 bg-primary-600 hover:bg-primary-700 rounded-lg sm:rounded-l-none sm:rounded-r-lg transition-colors duration-200 min-h-[48px] flex items-center justify-center"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
+                    aria-label="Subscribe to newsletter"
                   >
                     <ArrowRight className="w-5 h-5" />
+                    <span className="ml-2 sm:hidden font-medium">Subscribe</span>
                   </motion.button>
                 </div>
               </div>
@@ -164,15 +166,15 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-neutral-800 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-neutral-400 text-sm mb-4 md:mb-0">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-neutral-400 text-sm text-center md:text-left">
               © 2024 Zikshana Global Foundation. All rights reserved.
             </p>
-            <div className="flex space-x-6 text-sm">
-              <Link to="/privacy" className="text-neutral-400 hover:text-white transition-colors duration-200">
+            <div className="flex flex-wrap justify-center gap-4 md:gap-6 text-sm">
+              <Link to="/privacy" className="text-neutral-400 hover:text-white transition-colors duration-200 min-h-[44px] flex items-center">
                 Privacy Policy
               </Link>
-              <Link to="/terms" className="text-neutral-400 hover:text-white transition-colors duration-200">
+              <Link to="/terms" className="text-neutral-400 hover:text-white transition-colors duration-200 min-h-[44px] flex items-center">
                 Terms and Conditions
               </Link>
             </div>

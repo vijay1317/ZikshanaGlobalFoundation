@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useNavigate } from 'react-router-dom';
 import bannerImage from '/src/assets/IMG_1493.HEIC.jpg';
 
 // Scroll Reveal Component
@@ -61,6 +62,8 @@ const ScrollReveal = ({ children, delay = 0, direction = 'up' }) => {
 };
 
 const Programs = () => {
+  const navigate = useNavigate();
+
   const programs = [
     {
       icon: '⚙️',
@@ -1156,6 +1159,7 @@ const Programs = () => {
               transition: 'all 0.3s ease',
               fontSize: '1.1rem'
             }}
+            onClick={() => navigate('/donate')}
             onMouseOver={(e) => {
               e.target.style.transform = 'scale(1.05)';
               e.target.style.boxShadow = '0 8px 25px rgba(251,191,36,0.4)';
